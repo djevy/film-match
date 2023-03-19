@@ -3,10 +3,15 @@ const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 
+const userRoutes = require("./routes/user");
+
 
 
 // Express app
 const app = express();
+
+// Route handler
+app.use("/api/user", userRoutes);
 
 // Connect to db
 mongoose
