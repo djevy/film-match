@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useLogin } from "../../hooks/useLogin";
+import "./Login.css"
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -27,7 +28,7 @@ const Login = () => {
         onChange={(e) => setPassword(e.target.value)}
         value={password}
       />
-      <button disabled={isLoading}>Log in</button>
+      <button className="glow-button" disabled={isLoading}>Log in</button>
       {error && <div className="error">{error}</div>}
     </form>
   );
