@@ -1,0 +1,19 @@
+.home-layout {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.home-layout .tagline {
+  font-size: 2em;
+}
+.home-layout .glow-button {
+  margin-top: 10px;
+}
+
+
+@media only screen and (min-width: 768px) {
+    .mobile-button {
+        display: none;
+    }
+  }

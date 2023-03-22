@@ -3,6 +3,9 @@ import { Link } from "react-router-dom";
 import { useLogout } from "../../hooks/useLogout";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import "./Navbar.css";
+import Modal from "../Modal/Modal";
+import Login from "../Login/Login"
+import Signup from "../Signup/Signup";
 
 const Navbar = () => {
   const { logout } = useLogout();
@@ -17,6 +20,16 @@ const Navbar = () => {
   };
   const closeMenu = () => {
     setNavbarOpen(false);
+  };
+
+  const [loginIsOpen, setLoginIsOpen] = useState(false);
+  const toggleLoginModal = () => {
+    setLoginIsOpen(!loginIsOpen);
+  };
+
+  const [signupIsOpen, setSignupIsOpen] = useState(false);
+  const toggleSignupModal = () => {
+    setSignupIsOpen(!signupIsOpen);
   };
   return (
     <header id="navbar">
@@ -38,12 +51,18 @@ const Navbar = () => {
               </div>
             ) : (
               <div>
-                <Link className="nav-element glow-button" to="/login">
-                  Log in
-                </Link>
-                <Link className="nav-element glow-button" to="/signup">
+                <button
+                  className="nav-element glow-button"
+                  onClick={toggleLoginModal}
+                >
+                  Login
+                </button>
+                <Modal isOpen={loginIsOpen} toggleModal={toggleLoginModal}>
+                  <Login />
+                </Modal>
+                {/* <Link className="nav-element glow-button" to="/signup">
                   Sign up
-                </Link>
+                </Link> */}
               </div>
             )}
           </nav>
@@ -65,26 +84,42 @@ const Navbar = () => {
 
           <nav className={`menuNav ${navbarOpen ? "showMenu" : ""}`}>
             {/* <nav className="nav-login"> */}
-              {user ? (
-                <div>
-                  <span className="nav-element">{user.email}</span>
-                  <button
-                    className="nav-element glow-button"
-                    onClick={() => {handleClick(); closeMenu();}}
-                  >
-                    Log out
-                  </button>
-                </div>
-              ) : (
-                <div>
-                  <Link className="nav-element glow-button" to="/login" onClick={closeMenu}>
-                    Log in
-                  </Link>
-                  <Link className="nav-element glow-button" to="/signup" onClick={closeMenu}>
-                    Sign up
-                  </Link>
-                </div>
-              )}
+            {user ? (
+              <div>
+                <span className="nav-element">{user.email}</span>
+                <button
+                  className="nav-element glow-button"
+                  onClick={() => {
+                    handleClick();
+                    closeMenu();
+                  }}
+                >
+                  Log out
+                </button>
+              </div>
+            ) : (
+              <div>
+                <button
+                  className="nav-element glow-button"
+                  onClick={() => {toggleLoginModal(); closeMenu();}}
+                >
+                  Login
+                </button>
+                <Modal isOpen={loginIsOpen} toggleModal={toggleLoginModal}>
+                  <Login />
+                </Modal>
+
+                <button
+                  className="nav-element glow-button"
+                  onClick={() => {toggleSignupModal(); closeMenu();}}
+                >
+                  Sign up
+                </button>
+                <Modal isOpen={signupIsOpen} toggleModal={toggleSignupModal}>
+                  <Signup />
+                </Modal>
+              </div>
+            )}
             {/* </nav> */}
           </nav>
         </div>
