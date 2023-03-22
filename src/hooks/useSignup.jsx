@@ -7,14 +7,14 @@ export const useSignup = () => {
   const [isLoading, setIsLoading] = useState(null);
   const { dispatch } = useAuthContext();
 
-  const signup = async (email, password) => {
+  const signup = async (email, password, confirmPassword) => {
     setIsLoading(true);
     setError(null);
 
     try {
       const response = await Axios.post(
         "http://localhost:4000/api/user/signup/",
-        { email, password }
+        { email, password, confirmPassword }
       );
       console.log(response);
 

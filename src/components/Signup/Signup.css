@@ -11,3 +11,25 @@
 .signup button {
   margin-top: 10px;
 }
+.signup input {
+  width: 100%;
+}
+.password-input {
+  display: flex;
+  align-items: center;
+}
+
+.show-password-button {
+  background-color: #fff;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  outline: none;
+  padding: 2px 0px;
+  margin-top: 0px !important;
+  display: flex;
+
+}
+.show-password-button span {
+  color: #000;
+}
