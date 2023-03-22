@@ -49,14 +49,14 @@ const Signup = () => {
         </button>
       </div>
       <label htmlFor="confirmPassword">Confirm Password:</label>
-<div className="password-input">
+      <div className="password-input">
         <input
           type={showPassword ? "text" : "password"}
           name="confirmPassword"
           onChange={(e) => setConfirmPassword(e.target.value)}
           value={confirmPassword}
         />
-                <button
+        <button
           className="show-password-button"
           onClick={handleShowPasswordClick}
         >
@@ -66,7 +66,7 @@ const Signup = () => {
             <span className="material-symbols-outlined">visibility_off</span>
           )}
         </button>
-</div>
+      </div>
       <button className="glow-button" disabled={isLoading}>
         Sign up
       </button>

@@ -11,3 +11,7 @@
 .login button {
   margin-top: 10px;
 }
+
+.login input {
+  width: 100%;
+}
