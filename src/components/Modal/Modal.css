@@ -35,7 +35,7 @@
   }
   
   .modal.open .modal-content {
-    animation: modalFadeIn 2s;
+    animation: modalFadeIn 1s;
   }
   
   @keyframes modalFadeIn {

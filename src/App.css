@@ -4,6 +4,7 @@ body {
   background-color: rgb(168, 115, 218);
   font-family: 'Karla', sans-serif;
   min-height: 100vh;
+  overflow: hidden;
 }
 a {
   text-decoration: none;
@@ -18,8 +19,12 @@ input {
     justify-content: center;
     align-items: center;
     min-height: calc(100vh - 60px);
+    overflow: hidden;
 }
 
+#root {
+  overflow: hidden;
+}
 
 
 .glow-button {

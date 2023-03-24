@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import Modal from "../../components/Modal/Modal";
 import Signup from "../../components/Signup/Signup";
 import Login from "../../components/Login/Login";
@@ -24,6 +25,7 @@ const Home = () => {
       {user ? (
         <div className="home-layout">
           <div>Welcome</div>
+          <Link to="/dashboard">Dashboard</Link>
         </div>
       ) : (
         <div className="home-layout">
