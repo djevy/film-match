@@ -1,6 +1,14 @@
 .settings-modal {
   min-width: 25vw;
   max-width: 50vw;
+
+  max-height: 600px;
+  position: relative;
+}
+.settings-options {
+  overflow: auto;
+  max-height: 400px;
+  min-height: 200px;
 }
 
 .settings-modal h4 {
@@ -18,7 +26,7 @@
   flex-direction: row;
   flex-wrap: wrap;
 }
-.show-genre-options div {
+.show-genre-options input {
   margin-left: 5px;
 }
 

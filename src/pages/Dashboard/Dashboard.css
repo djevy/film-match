@@ -2,21 +2,33 @@
   overflow: hidden;
 }
 
-
-.settings-container{
+.settings-container {
   display: flex;
+  align-items: center;
+}
+.settings-container p {
+  margin-left: auto;
+  font-weight: bold;
+  cursor: pointer;
 }
 #search-icon {
   cursor: pointer;
   font-size: 2em;
-  margin-left: auto;
   transition: 200ms;
+  margin-left: 5px;
 }
 
 #search-icon:hover {
   transform: scale(1.2);
 }
 
+.card-details-container h3 {
+  display: flex;
+  cursor: pointer;
+}
+.card-details.hide-details {
+  display: none;
+}
 
 .swipe {
   position: absolute;
@@ -29,75 +41,89 @@
 }
 
 .card {
-    position: relative;
-    background-color: #fff;
-    width: 80vw;
-    max-width: 260px;
-    height: 300px;
-    box-shadow: 0px 0px 60px 0px rgba(0,0,0,0.30);
-    border-radius: 20px;
-    background-size: cover;
-    background-position: center;
-  }
-  
-  .cardContent {
-    width: 100%;
-    height: 100%;
-  }
+  position: relative;
+  background-color: #fff;
+  width: 80vw;
+  max-width: 260px;
+  height: 300px;
+  box-shadow: 0px 0px 60px 0px rgba(0, 0, 0, 0.3);
+  border-radius: 20px;
+  background-size: cover;
+  background-position: center;
+}
 
-  .card h3 {
-    position: absolute;
-    bottom: 0;
-    margin: 10px;
-    color: #000;
+.cardContent {
+  width: 100%;
+  height: 100%;
+}
+
+.card h3 {
+  position: absolute;
+  bottom: 0;
+  margin: 10px;
+  color: #fff;
+}
+
+.infoText {
+  width: 100%;
+  justify-content: center;
+  display: flex;
+  color: #000;
+  animation-name: popup;
+  animation-duration: 800ms;
+}
+
+.dashboard .swipe-buttons {
+  margin: 20px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.swipe-buttons button {
+  flex-shrink: 0;
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  color: #fff;
+  font-size: 18px;
+  background-color: #9198e5;
+  transition: 200ms;
+  margin: 10px;
+  font-weight: bolder;
+  width: 160px;
+  box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.1);
+}
+
+.swipe-buttons button:hover {
+  transform: scale(1.05);
+}
+
+@keyframes popup {
+  0% {
+    transform: scale(1, 1);
   }
-  
-  .infoText {
-    width: 100%;
-    justify-content: center;
-    display: flex;
-    color: #000;
-    animation-name: popup;
-    animation-duration: 800ms;
+  10% {
+    transform: scale(1.1, 1.1);
   }
-  
+  30% {
+    transform: scale(0.9, 0.9);
+  }
+  50% {
+    transform: scale(1, 1);
+  }
+  57% {
+    transform: scale(1, 1);
+  }
+  64% {
+    transform: scale(1, 1);
+  }
+  100% {
+    transform: scale(1, 1);
+  }
+}
+
+@media (max-width: 625px) {
   .dashboard .swipe-buttons {
-    margin: 20px;
-    display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
   }
-
-  .swipe-buttons button {
-    flex-shrink: 0;
-    padding: 10px;
-    border-radius: 5px;
-    border: none;
-    color: #fff;
-    font-size: 18px;
-    background-color: #9198e5;
-    transition: 200ms;
-    margin: 10px;
-    font-weight: bolder;
-    width: 160px;
-    box-shadow: 0px 0px 30px 0px rgba(0,0,0,0.10);
-  }
-  
-  .swipe-buttons button:hover {
-    transform: scale(1.05);
-  }
-  
-  @keyframes popup {
-    0%   { transform: scale(1,1) }
-    10%  { transform: scale(1.1,1.1) }
-    30%  { transform: scale(.9,.9) }
-    50%  { transform: scale(1,1) }
-    57%  { transform: scale(1,1) }
-    64%  { transform: scale(1,1) }
-    100% { transform: scale(1,1) }
-  }
-
-  @media (max-width: 625px) {
-    .dashboard .swipe-buttons {
-      flex-direction: column;
-    }
-  }
+}

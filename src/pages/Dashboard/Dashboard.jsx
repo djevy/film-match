@@ -3,47 +3,34 @@ import TinderCard from "react-tinder-card";
 import "./Dashboard.css";
 import Modal from "../../components/Modal/Modal";
 import SearchSettings from "../../components/SearchSettings/SearchSettings";
-
-const db = [
-  {
-    name: "Shrek",
-    url: "./img/Shrek.jpg",
-  },
-  {
-    name: "Shrek 2",
-    url: "./img/Shrek2.jpg",
-  },
-  {
-    name: "Puss in Boots",
-    url: "./img/PussInBoots.jpg",
-  },
-  {
-    name: "Lilo & Stitch",
-    url: "./img/LiloStitch.jpg",
-  },
-  {
-    name: "The Incredibles",
-    url: "./img/TheIncredibles.jpg",
-  },
-];
+import Popcorn from "../../images/popcorn.jpg";
 
 const Dashboard = () => {
+  const [cards, setCards] = useState([
+    { id: "1", name: "Set some options first", url: Popcorn },
+  ]);
   const [settingsIsOpen, setSettingsIsOpen] = useState(false);
   const toggleSettingsModal = () => {
     setSettingsIsOpen(!settingsIsOpen);
   };
+  const [showDetails, setShowDetails] = useState();
+  const toggleShowDetails = () => {
+    setShowDetails(!showDetails);
+  };
 
-  const [currentIndex, setCurrentIndex] = useState(db.length - 1);
+  const [page, setPage] = useState("1");
+
+  const [currentIndex, setCurrentIndex] = useState(cards.length - 1);
   const [lastDirection, setLastDirection] = useState();
   // used for outOfFrame closure
   const currentIndexRef = useRef(currentIndex);
 
   const childRefs = useMemo(
     () =>
-      Array(db.length)
+      Array(cards.length)
         .fill(0)
         .map((i) => React.createRef()),
-    []
+    [cards.length]
   );
 
   const updateCurrentIndex = (val) => {
@@ -51,7 +38,7 @@ const Dashboard = () => {
     currentIndexRef.current = val;
   };
 
-  const canGoBack = currentIndex < db.length - 1;
+  const canGoBack = currentIndex < cards.length - 1;
 
   const canSwipe = currentIndex >= 0;
 
@@ -68,7 +55,7 @@ const Dashboard = () => {
   };
 
   const swipe = async (dir) => {
-    if (canSwipe && currentIndex < db.length) {
+    if (canSwipe && currentIndex < cards.length) {
       await childRefs[currentIndex].current.swipe(dir); // Swipe the card!
     }
   };
@@ -85,6 +72,7 @@ const Dashboard = () => {
       {/* <h2>Dashboard</h2> */}
 
       <div className="settings-container">
+        <p onClick={toggleSettingsModal}>Search Options</p>
         <span
           id="search-icon"
           className="material-symbols-outlined"
@@ -93,7 +81,12 @@ const Dashboard = () => {
           settings
         </span>
         <Modal isOpen={settingsIsOpen} toggleModal={toggleSettingsModal}>
-          <SearchSettings />
+          <SearchSettings
+            setCards={setCards}
+            page={page}
+            setPage={setPage}
+            setCurrentIndex={setCurrentIndex}
+          />
         </Modal>
       </div>
 
@@ -109,7 +102,7 @@ const Dashboard = () => {
           style={{ backgroundColor: !canSwipe && "#c3c4d3" }}
           onClick={() => swipe("left")}
         >
-          Swipe left!
+          <span className="material-symbols-outlined">thumb_down</span>
         </button>
         <button
           style={{ backgroundColor: !canGoBack && "#c3c4d3" }}
@@ -121,15 +114,15 @@ const Dashboard = () => {
           style={{ backgroundColor: !canSwipe && "#c3c4d3" }}
           onClick={() => swipe("right")}
         >
-          Swipe right!
+          <span className="material-symbols-outlined">thumb_up</span>
         </button>
       </div>
       <div className="cardContainer">
-        {db.map((character, index) => (
+        {cards.map((character, index) => (
           <TinderCard
             ref={childRefs[index]}
             className="swipe"
-            key={character.name}
+            key={character.id}
             onSwipe={(dir) => swiped(dir, character.name, index)}
             onCardLeftScreen={() => outOfFrame(character.name, index)}
           >
@@ -137,14 +130,32 @@ const Dashboard = () => {
               style={{ backgroundImage: "url(" + character.url + ")" }}
               className="card"
             >
-              <h3>{character.name}</h3>
+              {/* <h3>{character.name}</h3> */}
             </div>
           </TinderCard>
         ))}
       </div>
 
-      <div>
-        <h3>Details</h3>
+      <div className="card-details-container">
+        <h3 onClick={toggleShowDetails}>
+          Details{" "}
+          <span className="material-symbols-outlined">
+            {showDetails ? "expand_more" : "expand_less"}
+          </span>
+        </h3>
+        <div className={`card-details ${showDetails ? "hide-details" : ""}`}>
+          <h4>{cards[currentIndex]?.name}</h4>
+          {cards[currentIndex]?.releaseDate && (
+            <p>
+              Release Date:{" "}
+              {cards[currentIndex]?.releaseDate?.day &&
+                cards[currentIndex]?.releaseDate?.day + "/"}
+              {cards[currentIndex]?.releaseDate?.month &&
+                cards[currentIndex]?.releaseDate?.month + "/"}
+              {cards[currentIndex]?.releaseDate?.year}
+            </p>
+          )}
+        </div>
       </div>
     </div>
   );
