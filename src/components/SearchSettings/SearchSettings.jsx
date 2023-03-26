@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "./SearchSettings.css";
 import axios from "axios";
-import Space from "../../images/space.jpg";
 
-const SearchSettings = ({ setCards, page, setPage, setCurrentIndex }) => {
-  const [error, setError] = useState(null);
-  const [isLoading, setIsLoading] = useState(null);
+const SearchSettings = (props) => {
 
   const [showTitleTypes, setShowTitleTypes] = useState();
   const toggleShowTitleTypes = () => {
@@ -27,87 +24,40 @@ const SearchSettings = ({ setCards, page, setPage, setCurrentIndex }) => {
     setShowYears(!showYears);
   };
 
-  const [titleType, setTitleType] = useState("movie");
   const handleTitleTypeSelect = (e) => {
-    setTitleType(e.target.value);
+    props.setTitleType(e.target.value);
+    props.setPage(1)
     console.log(e.target.value);
   };
 
-  const [searchType, setSearchType] = useState("top_boxoffice_200");
   const handleSearchTypeSelect = (e) => {
-    setSearchType(e.target.value);
+    props.setSearchType(e.target.value);
+    props.setPage(1)
     console.log(e.target.value);
   };
-  const [genreType, setGenreType] = useState();
+
   const handleGenreSelect = (e) => {
-    setGenreType(e.target.value);
+    props.setGenreType(e.target.value);
+    props.setPage(1)
     console.log(e.target.value);
   };
-  const [year, setYear] = useState();
+
   const handleYearSelect = (e) => {
-    setYear(e.target.value);
+    props.setYear(e.target.value);
+    props.setPage(1)
     console.log(e.target.value);
   };
 
   const handleReset = (e) => {
     e.preventDefault();
-    setTitleType(null);
-    setSearchTypes(null);
-    setGenreType(null);
-    setYear(null);
+    props.setTitleType(null);
+    props.setSearchTypes(null);
+    props.setGenreType(null);
+    props.setYear(null);
+    props.setPage(1)
   };
 
-  const handleSearch = async () => {
-    setIsLoading(true);
-    setError(null);
 
-    const searchOptions = {
-      method: "GET",
-      url: "https://moviesdatabase.p.rapidapi.com/titles",
-      params: {
-        genre: genreType,
-        year: year,
-        page: page,
-        list: searchType,
-        titleType: titleType,
-      },
-      headers: {
-        "X-RapidAPI-Key": "abf202e9e2msh0d21a021c55dbeap102e27jsna872cc6f8c54",
-        "X-RapidAPI-Host": "moviesdatabase.p.rapidapi.com",
-      },
-    };
-    try {
-      const response = await axios.request(searchOptions);
-      console.log(response);
-      if (!response.data.entries > 0) {
-        setError("Sorry, there are no results for this search");
-        setIsLoading(false);
-        throw Error("Sorry, there are no results for this search");
-      }
-      if (response.data.results) {
-        const newCards = [];
-        response.data.results.map((result) => {
-          console.log(result);
-          return newCards.push({
-            id: result?.id,
-            name: result?.titleText?.text,
-            url: result?.primaryImage?.url ?? Space,
-            releaseDate: result?.releaseDate
-          });
-        });
-        setCards(newCards);
-        setCurrentIndex(newCards.length - 1);
-      }
-
-      setIsLoading(false);
-    } catch (error) {
-      console.error(error);
-      if (error.response) {
-        setError(error.response.data.error);
-        setIsLoading(false);
-      }
-    }
-  };
 
   useEffect(() => {
     const genreOptions = {
@@ -169,7 +119,7 @@ const SearchSettings = ({ setCards, page, setPage, setCurrentIndex }) => {
             id="movie"
             type="radio"
             value="movie"
-            checked={titleType === "movie"}
+            checked={props.titleType === "movie"}
             onChange={handleTitleTypeSelect}
           />
           <label htmlFor="movie">Movies</label>
@@ -177,7 +127,7 @@ const SearchSettings = ({ setCards, page, setPage, setCurrentIndex }) => {
             id="tvSeries"
             type="radio"
             value="tvSeries"
-            checked={titleType === "tvSeries"}
+            checked={props.titleType === "tvSeries"}
             onChange={handleTitleTypeSelect}
           />
           <label htmlFor="tvSeries">Tv Shows</label>
@@ -185,7 +135,7 @@ const SearchSettings = ({ setCards, page, setPage, setCurrentIndex }) => {
             id="videoGame"
             type="radio"
             value="videoGame"
-            checked={titleType === "videoGame"}
+            checked={props.titleType === "videoGame"}
             onChange={handleTitleTypeSelect}
           />
           <label htmlFor="videoGame">Video Games</label>
@@ -202,6 +152,16 @@ const SearchSettings = ({ setCards, page, setPage, setCurrentIndex }) => {
             showSearchTypes ? "show-genre-options" : ""
           }`}
         >
+          <div>
+            <input
+              id="any"
+              type="radio"
+              value="any"
+              checked={props.searchType === "any"}
+              onChange={handleSearchTypeSelect}
+            />
+            <label htmlFor="any">Any</label>
+          </div>
           {searchTypes &&
             searchTypes?.map((showType, i) => {
               return (
@@ -210,7 +170,7 @@ const SearchSettings = ({ setCards, page, setPage, setCurrentIndex }) => {
                     id={showType}
                     type="radio"
                     value={showType}
-                    checked={searchType === showType}
+                    checked={props.searchType === showType}
                     onChange={handleSearchTypeSelect}
                   />
                   <label htmlFor={showType}>
@@ -238,7 +198,7 @@ const SearchSettings = ({ setCards, page, setPage, setCurrentIndex }) => {
                     id={genre}
                     type="radio"
                     value={genre}
-                    checked={genreType === genre}
+                    checked={props.genreType === genre}
                     onChange={handleGenreSelect}
                   />
                   <label htmlFor={genre}>{genre}</label>
@@ -257,28 +217,29 @@ const SearchSettings = ({ setCards, page, setPage, setCurrentIndex }) => {
         >
           <input
             type="number"
-            min="1900"
+            min="1960"
             max="2023"
             step="1"
-            
             onChange={handleYearSelect}
           />
         </div>
-        <button onClick={handleReset}>Reset</button>
+        <button className="button" onClick={handleReset}>
+          Reset
+        </button>
       </div>
 
       <button
-        disabled={isLoading}
-        onClick={handleSearch}
+        disabled={props.isLoading}
+        onClick={props.handleSearch}
         className="glow-button"
       >
-        {isLoading ? (
+        {props.isLoading ? (
           <span className="material-symbols-outlined">pending</span>
         ) : (
           "Search"
         )}
       </button>
-      {error && <p className="error">{error}</p>}
+      {props.error && <p className="error">{props.error}</p>}
     </div>
   );
 };

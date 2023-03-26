@@ -4,7 +4,7 @@ body {
   background-color: rgb(168, 115, 218);
   font-family: "Karla", sans-serif;
   min-height: 100vh;
-  overflow: hidden;
+  overflow-x: hidden;
 }
 a {
   text-decoration: none;
@@ -17,16 +17,31 @@ input {
   color: #ff0000;
 }
 .page-layout {
-  padding: 0px 5px;
+  margin: 20px auto;
+  padding: 0px 10px;
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: calc(100vh - 60px);
-  overflow: hidden;
+  overflow-x: hidden;
 }
 
 #root {
-  overflow: hidden;
+  overflow-x: hidden;
+}
+.button {
+  padding: 0.6em 1em;
+  border: none;
+  outline: none;
+  color: rgb(255, 255, 255);
+  background: #4c359e;
+  cursor: pointer;
+  position: relative;
+  z-index: 0;
+  border-radius: 10px;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
 }
 
 .glow-button {

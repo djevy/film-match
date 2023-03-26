@@ -1,14 +1,24 @@
-import React, { useState, useRef, useMemo } from "react";
+import React, { useState, useRef, useMemo, useCallback  } from "react";
+import axios from "axios";
 import TinderCard from "react-tinder-card";
 import "./Dashboard.css";
 import Modal from "../../components/Modal/Modal";
 import SearchSettings from "../../components/SearchSettings/SearchSettings";
 import Popcorn from "../../images/popcorn.jpg";
+import Space from "../../images/space.jpg";
 
 const Dashboard = () => {
+  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(null);
   const [cards, setCards] = useState([
     { id: "1", name: "Set some options first", url: Popcorn },
   ]);
+
+  const [titleType, setTitleType] = useState("movie");
+  const [searchType, setSearchType] = useState("top_boxoffice_200");
+  const [genreType, setGenreType] = useState();
+  const [year, setYear] = useState();
+
   const [settingsIsOpen, setSettingsIsOpen] = useState(false);
   const toggleSettingsModal = () => {
     setSettingsIsOpen(!settingsIsOpen);
@@ -18,7 +28,7 @@ const Dashboard = () => {
     setShowDetails(!showDetails);
   };
 
-  const [page, setPage] = useState("1");
+  const [page, setPage] = useState(1);
 
   const [currentIndex, setCurrentIndex] = useState(cards.length - 1);
   const [lastDirection, setLastDirection] = useState();
@@ -55,6 +65,9 @@ const Dashboard = () => {
   };
 
   const swipe = async (dir) => {
+    handleNext()
+    console.log(currentIndex);
+    setError(null);
     if (canSwipe && currentIndex < cards.length) {
       await childRefs[currentIndex].current.swipe(dir); // Swipe the card!
     }
@@ -67,6 +80,151 @@ const Dashboard = () => {
     updateCurrentIndex(newIndex);
     await childRefs[newIndex].current.restoreCard();
   };
+  const handleSearch = useCallback(async () => {
+    setIsLoading(true);
+    setError(null);
+
+    const searchOptions = {
+      method: "GET",
+      url: "https://moviesdatabase.p.rapidapi.com/titles",
+      params: {
+        genre: genreType,
+        year: year,
+        page: page,
+        list: searchType === "any" ? null : searchType,
+        titleType: titleType,
+      },
+      headers: {
+        "X-RapidAPI-Key": "abf202e9e2msh0d21a021c55dbeap102e27jsna872cc6f8c54",
+        "X-RapidAPI-Host": "moviesdatabase.p.rapidapi.com",
+      },
+    };
+    try {
+      const response = await axios.request(searchOptions);
+      console.log(response);
+      if (!response.data.entries > 0) {
+        setError("Sorry, there are no results for this search");
+        setIsLoading(false);
+        throw Error("Sorry, there are no results for this search");
+      }
+      if (response.data.results) {
+        const newCards = [];
+        response.data.results.map((result) => {
+          console.log(result);
+          return newCards.push({
+            id: result?.id,
+            name: result?.titleText?.text,
+            url: result?.primaryImage?.url ?? Space,
+            releaseDate: result?.releaseDate,
+            mediaType: result?.titleType.id,
+          });
+        });
+        setCards(newCards);
+        setCurrentIndex(newCards.length - 1);
+
+        // const newArray = newCards.concat(props.cards);
+        // props.setCards(newArray);
+        // props.setCurrentIndex(newArray.length - 1);
+        setIsLoading(false);
+      }
+    } catch (error) {
+      console.error(error);
+      if (error.response) {
+        setError(error.response.data.error);
+        setIsLoading(false);
+      }
+    }
+  }, [genreType, page, searchType, titleType, year]);
+
+  const handleMoreInfo = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError(null);
+    if (cards[currentIndex].mediaType === "movie") {
+      const options = {
+        method: "GET",
+        url: `https://moviesminidatabase.p.rapidapi.com/movie/id/${cards[currentIndex].id}/`,
+        headers: {
+          "X-RapidAPI-Key":
+            "abf202e9e2msh0d21a021c55dbeap102e27jsna872cc6f8c54",
+          "X-RapidAPI-Host": "moviesminidatabase.p.rapidapi.com",
+        },
+      };
+
+      try {
+        const response = await axios.request(options);
+        console.log(response);
+        // eslint-disable-next-line
+        if (response.data.results == 0) {
+          setIsLoading(false);
+          setError("Sorry, we couldn't find any extra info for this title");
+        }
+        if (response.data.results) {
+          cards[currentIndex].content_rating =
+            response.data.results.content_rating;
+          cards[currentIndex].rating = response.data.results.rating;
+          cards[currentIndex].description = response.data.results.description;
+          setIsLoading(false);
+        }
+      } catch (error) {
+        console.error(error);
+        if (error.response) {
+          setError(error.response.data.error);
+          setIsLoading(false);
+        }
+      }
+    } else if (cards[currentIndex].mediaType === "tvSeries") {
+      const options = {
+        method: "GET",
+        url: `https://moviesminidatabase.p.rapidapi.com/series/id/${cards[currentIndex].id}/`,
+        headers: {
+          "X-RapidAPI-Key":
+            "abf202e9e2msh0d21a021c55dbeap102e27jsna872cc6f8c54",
+          "X-RapidAPI-Host": "moviesminidatabase.p.rapidapi.com",
+        },
+      };
+
+      try {
+        const response = await axios.request(options);
+        console.log(response);
+        // eslint-disable-next-line
+        if (response.data.results == 0) {
+          setIsLoading(false);
+          setError("Sorry, we couldn't find any extra info for this title");
+        }
+        if (response.data.results) {
+          cards[currentIndex].content_rating =
+            response.data.results.content_rating;
+          cards[currentIndex].rating = response.data.results.rating;
+          cards[currentIndex].description = response.data.results.description;
+          setIsLoading(false);
+        }
+      } catch (error) {
+        console.error(error);
+        if (error.response) {
+          setError(error.response.data.error);
+          setIsLoading(false);
+        }
+      }
+    } else {
+      setIsLoading(false);
+      setError("Sorry, we couldn't find any extra info for this title");
+    }
+    return;
+  };
+  // useEffect(() => {
+  //   if (currentIndex === 0) {
+  //     setPage(page + 1);
+  //     handleSearch()
+  //   }
+  // }, [currentIndex, page, handleSearch]);
+  const handleNext = useCallback(() => {
+    if (currentIndex === 0) {
+      setPage(page + 1);
+      handleSearch()
+    }
+  },[page, handleSearch, currentIndex]);
+
   return (
     <div className="dashboard">
       {/* <h2>Dashboard</h2> */}
@@ -83,9 +241,19 @@ const Dashboard = () => {
         <Modal isOpen={settingsIsOpen} toggleModal={toggleSettingsModal}>
           <SearchSettings
             setCards={setCards}
+            cards={cards}
             page={page}
             setPage={setPage}
             setCurrentIndex={setCurrentIndex}
+            titleType={titleType}
+            setTitleType={setTitleType}
+            searchType={searchType}
+            setSearchType={setSearchType}
+            year={year}
+            setYear={setYear}
+            genreType={genreType}
+            setGenreType={setGenreType}
+            handleSearch={handleSearch}
           />
         </Modal>
       </div>
@@ -146,14 +314,40 @@ const Dashboard = () => {
         <div className={`card-details ${showDetails ? "hide-details" : ""}`}>
           <h4>{cards[currentIndex]?.name}</h4>
           {cards[currentIndex]?.releaseDate && (
-            <p>
-              Release Date:{" "}
-              {cards[currentIndex]?.releaseDate?.day &&
-                cards[currentIndex]?.releaseDate?.day + "/"}
-              {cards[currentIndex]?.releaseDate?.month &&
-                cards[currentIndex]?.releaseDate?.month + "/"}
-              {cards[currentIndex]?.releaseDate?.year}
-            </p>
+            <div>
+              <p>
+                Release Date:{" "}
+                {cards[currentIndex]?.releaseDate?.day &&
+                  cards[currentIndex]?.releaseDate?.day + "/"}
+                {cards[currentIndex]?.releaseDate?.month &&
+                  cards[currentIndex]?.releaseDate?.month + "/"}
+                {cards[currentIndex]?.releaseDate?.year}
+              </p>
+              {cards[currentIndex]?.content_rating && (
+                <p>Content Ratings: {cards[currentIndex]?.content_rating}</p>
+              )}
+              {cards[currentIndex]?.rating && (
+                <p>IMDB Score: {cards[currentIndex]?.rating}</p>
+              )}
+              {cards[currentIndex]?.description && (
+                <div>
+                  <p>Description: </p>
+                  <p>{cards[currentIndex]?.description}</p>
+                </div>
+              )}
+              <button
+                className="button"
+                onClick={handleMoreInfo}
+                disabled={isLoading}
+              >
+                {isLoading ? (
+                  <span className="material-symbols-outlined">pending</span>
+                ) : (
+                  "More..."
+                )}
+              </button>
+              {error && <p className="error">{error}</p>}
+            </div>
           )}
         </div>
       </div>
