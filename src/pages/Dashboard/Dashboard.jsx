@@ -1,4 +1,4 @@
-import React, { useState, useRef, useMemo, useCallback  } from "react";
+import React, { useState, useRef, useMemo, useCallback } from "react";
 import axios from "axios";
 import TinderCard from "react-tinder-card";
 import "./Dashboard.css";
@@ -6,6 +6,7 @@ import Modal from "../../components/Modal/Modal";
 import SearchSettings from "../../components/SearchSettings/SearchSettings";
 import Popcorn from "../../images/popcorn.jpg";
 import Space from "../../images/space.jpg";
+import YoutubeEmbed from "../../components/YoutubeEmbed/YoutubeEmbed";
 
 const Dashboard = () => {
   const [error, setError] = useState(null);
@@ -65,7 +66,7 @@ const Dashboard = () => {
   };
 
   const swipe = async (dir) => {
-    handleNext()
+    handleNext();
     console.log(currentIndex);
     setError(null);
     if (canSwipe && currentIndex < cards.length) {
@@ -164,6 +165,7 @@ const Dashboard = () => {
             response.data.results.content_rating;
           cards[currentIndex].rating = response.data.results.rating;
           cards[currentIndex].description = response.data.results.description;
+          cards[currentIndex].trailer = response.data.results.trailer;
           setIsLoading(false);
         }
       } catch (error) {
@@ -197,6 +199,7 @@ const Dashboard = () => {
             response.data.results.content_rating;
           cards[currentIndex].rating = response.data.results.rating;
           cards[currentIndex].description = response.data.results.description;
+          cards[currentIndex].trailer = response.data.results.trailer;
           setIsLoading(false);
         }
       } catch (error) {
@@ -221,9 +224,9 @@ const Dashboard = () => {
   const handleNext = useCallback(() => {
     if (currentIndex === 0) {
       setPage(page + 1);
-      handleSearch()
+      handleSearch();
     }
-  },[page, handleSearch, currentIndex]);
+  }, [page, handleSearch, currentIndex]);
 
   return (
     <div className="dashboard">
@@ -335,6 +338,7 @@ const Dashboard = () => {
                   <p>{cards[currentIndex]?.description}</p>
                 </div>
               )}
+              {cards[currentIndex]?.trailer && <YoutubeEmbed link={cards[currentIndex]?.trailer}/>}
               <button
                 className="button"
                 onClick={handleMoreInfo}
