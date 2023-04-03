@@ -4,7 +4,6 @@ import "./Modal.css";
 function Modal(props) {
   return (
     <div>
-      {/* <button onClick={props.toggleModal}>{props.text}</button> */}
       {props.isOpen && (
         <div className={`modal ${props.isOpen ? "open" : "closed"}`}>
           <div className="modal-content">

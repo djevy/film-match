@@ -1,0 +1,13 @@
+.swiped-card-layout {
+    display: flex;
+    flex-direction: column;
+}
+
+.swiped-cards {
+    display: flex;
+    flex-direction: column;
+    background-color: blueviolet;
+    margin: 10px;
+    padding: 10px;
+    border-radius: 15px;
+}

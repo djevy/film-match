@@ -4,6 +4,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 
 const userRoutes = require("./routes/user");
+const swipesRoutes = require("./routes/swipes");
 
 
 
@@ -20,6 +21,7 @@ app.use((req, res, next) => {
 
 // Route handler
 app.use("/api/user", userRoutes);
+app.use("/api/swipes", swipesRoutes);
 
 // Connect to db
 mongoose

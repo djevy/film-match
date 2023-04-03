@@ -1,4 +1,10 @@
-import React, { useState, useRef, useMemo, useCallback } from "react";
+import React, {
+  useState,
+  useRef,
+  useMemo,
+  useCallback,
+  useEffect,
+} from "react";
 import axios from "axios";
 import TinderCard from "react-tinder-card";
 import "./Dashboard.css";
@@ -7,14 +13,30 @@ import SearchSettings from "../../components/SearchSettings/SearchSettings";
 import Popcorn from "../../images/popcorn.jpg";
 import Space from "../../images/space.jpg";
 import YoutubeEmbed from "../../components/YoutubeEmbed/YoutubeEmbed";
+import { useSwipesContext } from "../../hooks/useSwipesContext";
+import { useAuthContext } from "../../hooks/useAuthContext";
 
 const Dashboard = () => {
+  const { dispatch } = useSwipesContext();
+  const { user } = useAuthContext();
+
+  const [swipedCards, setSwipedCards] = useState([]);
   const [error, setError] = useState(null);
+  const [searchError, setSearchError] = useState(null);
   const [isLoading, setIsLoading] = useState(null);
   const [cards, setCards] = useState([
-    { id: "1", name: "Set some options first", url: Popcorn },
+    { imdb_id: "1", name: "Set some options first", url: Popcorn },
   ]);
 
+  const [searchTypes, setSearchTypes] = useState([
+    "most_pop_movies",
+    "top_boxoffice_200",
+    "top_boxoffice_last_weekend_10",
+    "top_rated_250",
+    "top_rated_english_250",
+    "top_rated_lowest_100",
+    "titles",
+  ]);
   const [titleType, setTitleType] = useState("movie");
   const [searchType, setSearchType] = useState("top_boxoffice_200");
   const [genreType, setGenreType] = useState();
@@ -29,6 +51,31 @@ const Dashboard = () => {
     setShowDetails(!showDetails);
   };
 
+  // Get previous swipes
+  useEffect(() => {
+    const getSwipes = async () => {
+      try {
+        const response = await axios.get("http://localhost:4000/api/swipes", {
+          headers: { Authorization: `Bearer ${user.token}` },
+        });
+        console.log(response);
+        dispatch({ type: "SET_SWIPE", payload: response.data });
+        setSwipedCards(response.data);
+        // response.data.forEach((swiped) => {
+        //   console.log(swiped)
+        //   setSwipedCards([...swipedCards, swiped]);
+        // });
+        
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    if (user) {
+      getSwipes();
+    }
+  }, [dispatch, user]);
+  console.log("swipedCards", swipedCards);
   const [page, setPage] = useState(1);
 
   const [currentIndex, setCurrentIndex] = useState(cards.length - 1);
@@ -68,6 +115,15 @@ const Dashboard = () => {
   const swipe = async (dir) => {
     handleNext();
     console.log(currentIndex);
+    console.log(cards[currentIndex]);
+    if (dir === "right") {
+      cards[currentIndex].liked = true;
+      setSwipedCards([...swipedCards, cards[currentIndex]]);
+    } else if (dir === "left") {
+      cards[currentIndex].liked = false;
+      setSwipedCards([...swipedCards, cards[currentIndex]]);
+    }
+    handleSwipeSubmit(cards[currentIndex]);
     setError(null);
     if (canSwipe && currentIndex < cards.length) {
       await childRefs[currentIndex].current.swipe(dir); // Swipe the card!
@@ -83,13 +139,13 @@ const Dashboard = () => {
   };
   const handleSearch = useCallback(async () => {
     setIsLoading(true);
-    setError(null);
+    setSearchError(null);
 
     const searchOptions = {
       method: "GET",
       url: "https://moviesdatabase.p.rapidapi.com/titles",
       params: {
-        genre: genreType,
+        genre: genreType === "any" ? null : genreType,
         year: year,
         page: page,
         list: searchType === "any" ? null : searchType,
@@ -104,38 +160,43 @@ const Dashboard = () => {
       const response = await axios.request(searchOptions);
       console.log(response);
       if (!response.data.entries > 0) {
-        setError("Sorry, there are no results for this search");
+        setSearchError("Sorry, there are no results for this search");
         setIsLoading(false);
         throw Error("Sorry, there are no results for this search");
       }
       if (response.data.results) {
         const newCards = [];
-        response.data.results.map((result) => {
-          console.log(result);
-          return newCards.push({
-            id: result?.id,
+        // Filter out already swiped cards from the database
+        const newItems = response.data.results.filter(
+          (item) =>
+            !swipedCards.find((swipedCard) => swipedCard.imdb_id === item.id)
+        );
+
+        console.log("newItems", newItems);
+        newItems.forEach((result) => {
+          // console.log(result);
+          newCards.push({
+            imdb_id: result?.id,
             name: result?.titleText?.text,
             url: result?.primaryImage?.url ?? Space,
             releaseDate: result?.releaseDate,
             mediaType: result?.titleType.id,
           });
         });
-        setCards(newCards);
+        setSettingsIsOpen(false);
+        setCards(newCards.slice());
+        console.log("cards", cards);
         setCurrentIndex(newCards.length - 1);
-
-        // const newArray = newCards.concat(props.cards);
-        // props.setCards(newArray);
-        // props.setCurrentIndex(newArray.length - 1);
         setIsLoading(false);
       }
     } catch (error) {
       console.error(error);
       if (error.response) {
-        setError(error.response.data.error);
+        setSearchError(error.response.data.error);
         setIsLoading(false);
       }
     }
-  }, [genreType, page, searchType, titleType, year]);
+  }, [genreType, page, searchType, titleType, year, swipedCards, cards]);
 
   const handleMoreInfo = async (e) => {
     e.preventDefault();
@@ -215,12 +276,6 @@ const Dashboard = () => {
     }
     return;
   };
-  // useEffect(() => {
-  //   if (currentIndex === 0) {
-  //     setPage(page + 1);
-  //     handleSearch()
-  //   }
-  // }, [currentIndex, page, handleSearch]);
   const handleNext = useCallback(() => {
     if (currentIndex === 0) {
       setPage(page + 1);
@@ -228,10 +283,36 @@ const Dashboard = () => {
     }
   }, [page, handleSearch, currentIndex]);
 
+  // Send swipes to database
+  const handleSwipeSubmit = async (swipe) => {
+    if (swipe.imdb_id === "1") return;
+    if (!user) {
+      setError("Please login");
+      return;
+    }
+    console.log("swipe", swipe);
+
+    const { name, imdb_id, liked } = swipe;
+
+    try {
+      const response = await axios.post(
+        "http://localhost:4000/api/swipes",
+        { name, imdb_id, liked },
+        { headers: { Authorization: `Bearer ${user.token}` } }
+      );
+      dispatch({ type: "CREATE_WORKOUT", payload: response.data.swipe });
+
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+      if (error.response.data) {
+        setError(error.response.data.error);
+      }
+    }
+  };
+
   return (
     <div className="dashboard">
-      {/* <h2>Dashboard</h2> */}
-
       <div className="settings-container">
         <p onClick={toggleSettingsModal}>Search Options</p>
         <span
@@ -252,11 +333,15 @@ const Dashboard = () => {
             setTitleType={setTitleType}
             searchType={searchType}
             setSearchType={setSearchType}
+            searchTypes={searchTypes}
+            setSearchTypes={setSearchTypes}
             year={year}
             setYear={setYear}
             genreType={genreType}
             setGenreType={setGenreType}
             handleSearch={handleSearch}
+            searchError={searchError}
+            setSearchError={setSearchError}
           />
         </Modal>
       </div>
@@ -293,7 +378,7 @@ const Dashboard = () => {
           <TinderCard
             ref={childRefs[index]}
             className="swipe"
-            key={character.id}
+            key={character.imdb_id}
             onSwipe={(dir) => swiped(dir, character.name, index)}
             onCardLeftScreen={() => outOfFrame(character.name, index)}
           >
@@ -338,7 +423,9 @@ const Dashboard = () => {
                   <p>{cards[currentIndex]?.description}</p>
                 </div>
               )}
-              {cards[currentIndex]?.trailer && <YoutubeEmbed link={cards[currentIndex]?.trailer}/>}
+              {cards[currentIndex]?.trailer && (
+                <YoutubeEmbed link={cards[currentIndex]?.trailer} />
+              )}
               <button
                 className="button"
                 onClick={handleMoreInfo}

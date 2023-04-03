@@ -20,12 +20,12 @@ const Home = () => {
   };
   return (
     <div>
-      {/* <ToggleModalButton isOpen={isOpen} toggleModal={toggleModal} /> */}
-
       {user ? (
         <div className="home-layout">
           <div>Welcome</div>
           <Link to="/dashboard">Dashboard</Link>
+          <Link to="/history">History</Link>
+          <Link to="/friends">Friends</Link>
         </div>
       ) : (
         <div className="home-layout">
