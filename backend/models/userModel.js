@@ -13,7 +13,37 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
+  friends: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ],
 });
+
+// static find user method
+userSchema.statics.findByUserId = async function (_id) {
+  if (!_id) {
+    throw Error("All fields must be filled in");
+  }
+  const user = await this.findOne({ _id });
+  if (!user) {
+    throw Error("User not found");
+  }
+  return user;
+};
+
+// static find friend method
+userSchema.statics.findFriend = async function (email) {
+  if (!email) {
+    throw Error("All fields must be filled in");
+  }
+  const friend = await this.findOne({ email });
+  if (!friend) {
+    throw Error("Friend not found");
+  }
+  return friend;
+};
 
 // static login method
 userSchema.statics.login = async function (email, password) {
@@ -25,8 +55,8 @@ userSchema.statics.login = async function (email, password) {
     throw Error("Incorrect email");
   }
   const match = await bcrypt.compare(password, user.password);
-  if(!match) {
-    throw Error("Incorrect password, please try again")
+  if (!match) {
+    throw Error("Incorrect password, please try again");
   }
   return user;
 };
@@ -37,7 +67,7 @@ userSchema.statics.signup = async function (email, password, confirmPassword) {
   if (!email || !password || !confirmPassword) {
     throw Error("All fields must be filled");
   }
-  if(password !== confirmPassword) {
+  if (password !== confirmPassword) {
     throw Error("Please make sure passwords match");
   }
   if (!validator.isEmail(email)) {
