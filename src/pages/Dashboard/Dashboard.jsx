@@ -8,13 +8,17 @@ import React, {
 import axios from "axios";
 import TinderCard from "react-tinder-card";
 import "./Dashboard.css";
+
 import Modal from "../../components/Modal/Modal";
 import SearchSettings from "../../components/SearchSettings/SearchSettings";
-import Popcorn from "../../images/popcorn.jpg";
-import Space from "../../images/space.jpg";
 import YoutubeEmbed from "../../components/YoutubeEmbed/YoutubeEmbed";
 import { useSwipesContext } from "../../hooks/useSwipesContext";
+
 import { useAuthContext } from "../../hooks/useAuthContext";
+
+import Popcorn from "../../images/popcorn.jpg";
+import Space from "../../images/space.jpg";
+import Loading from "../../images/loading.gif";
 
 const Dashboard = () => {
   const { dispatch } = useSwipesContext();
@@ -65,7 +69,6 @@ const Dashboard = () => {
         //   console.log(swiped)
         //   setSwipedCards([...swipedCards, swiped]);
         // });
-        
       } catch (error) {
         console.error(error);
       }
@@ -205,7 +208,7 @@ const Dashboard = () => {
     if (cards[currentIndex].mediaType === "movie") {
       const options = {
         method: "GET",
-        url: `https://moviesminidatabase.p.rapidapi.com/movie/id/${cards[currentIndex].id}/`,
+        url: `https://moviesminidatabase.p.rapidapi.com/movie/id/${cards[currentIndex].imdb_id}/`,
         headers: {
           "X-RapidAPI-Key":
             "abf202e9e2msh0d21a021c55dbeap102e27jsna872cc6f8c54",
@@ -239,7 +242,7 @@ const Dashboard = () => {
     } else if (cards[currentIndex].mediaType === "tvSeries") {
       const options = {
         method: "GET",
-        url: `https://moviesminidatabase.p.rapidapi.com/series/id/${cards[currentIndex].id}/`,
+        url: `https://moviesminidatabase.p.rapidapi.com/series/id/${cards[currentIndex].imdb_id}/`,
         headers: {
           "X-RapidAPI-Key":
             "abf202e9e2msh0d21a021c55dbeap102e27jsna872cc6f8c54",
@@ -300,7 +303,7 @@ const Dashboard = () => {
         { name, imdb_id, liked },
         { headers: { Authorization: `Bearer ${user.token}` } }
       );
-      dispatch({ type: "CREATE_WORKOUT", payload: response.data.swipe });
+      dispatch({ type: "CREATE_SWIPE", payload: response.data.swipe });
 
       console.log(response);
     } catch (error) {
@@ -383,9 +386,14 @@ const Dashboard = () => {
             onCardLeftScreen={() => outOfFrame(character.name, index)}
           >
             <div
-              style={{ backgroundImage: "url(" + character.url + ")" }}
+              // style={{ backgroundImage: "url(" + character.url + ")" }}
               className="card"
             >
+              {character.url ? (
+                <img src={character.url} alt="" />
+              ) : (
+                <img src={Loading} alt="" />
+              )}
               {/* <h3>{character.name}</h3> */}
             </div>
           </TinderCard>

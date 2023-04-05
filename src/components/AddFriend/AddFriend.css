@@ -1,0 +1,12 @@
+.add-friend-form {
+  margin-top: 10px;
+}
+
+.friend-email-input {
+  display: flex;
+  flex-direction: column;
+}
+
+.friend-email-input button {
+  margin-top: 5px;
+}

@@ -3,6 +3,7 @@ import "./App.css";
 
 import Home from "./pages/Home/Home";
 import Dashboard from "./pages/Dashboard/Dashboard";
+import Matches from "./pages/Matches/Matches";
 import PreviousCards from "./pages/PreviousCards/PreviousCards";
 import Friends from "./pages/Friends/Friends";
 import Navbar from "./components/Navbar/Navbar";
@@ -19,6 +20,10 @@ const App = () => {
           <Route
             path="/dashboard"
             element={user ? <Dashboard /> : <Navigate to="/" />}
+          />
+          <Route
+            path="/matches"
+            element={user ? <Matches /> : <Navigate to="/" />}
           />
           <Route
             path="/history"

@@ -26,7 +26,7 @@ const SwipedCards = ({ swipe }) => {
   return (
     <div className="swiped-cards">
       <h4>{swipe.name}</h4>
-      <p>
+      <p className="swipe-opinion">
         <strong>Opinion: </strong>
         {swipe.liked ? (
           <span className="material-symbols-outlined">thumb_up</span>
@@ -37,7 +37,7 @@ const SwipedCards = ({ swipe }) => {
       <p>
         {/* {formatDistanceToNow(new Date(swipe.createdAt), { addSuffix: true })} */}
       </p>
-      <span className="material-symbols-outlined" onClick={handleDeleteClick}>
+      <span className="material-symbols-outlined swipe-delete" onClick={handleDeleteClick}>
         delete
       </span>
     </div>

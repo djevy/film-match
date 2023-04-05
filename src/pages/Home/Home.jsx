@@ -24,6 +24,7 @@ const Home = () => {
         <div className="home-layout">
           <div>Welcome</div>
           <Link to="/dashboard">Dashboard</Link>
+          <Link to="/matches">Matches</Link>
           <Link to="/history">History</Link>
           <Link to="/friends">Friends</Link>
         </div>

@@ -1,6 +1,9 @@
 .swiped-card-layout {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    max-width: 75vw;
+    flex-wrap: wrap;
+    justify-content: space-around;
 }
 
 .swiped-cards {
@@ -10,4 +13,17 @@
     margin: 10px;
     padding: 10px;
     border-radius: 15px;
+    max-width: 200px;
+    width: 100%;
+}
+
+.swiped-cards .swipe-opinion {
+    display: flex;
+}
+.swiped-cards .swipe-opinion span {
+    margin-left: 5px;
+}
+
+.swiped-cards .swipe-delete {
+    margin-left: auto;
 }

@@ -32,9 +32,24 @@ const signupUser = async (req, res) => {
   }
 };
 
+// get all friends
+const getFriends = async (req, res) => {
+  const user_id = req.user._id;
+  console.log(user_id);
+  try {
+    const userFriends = await User.find(user_id).populate("friends");
+    const friendEmails = userFriends.map(friend => friend.friends.map(f => f.email)).flat();
+    res.status(200).json({ friendEmails });
+  } catch (error) {
+    console.error(error);
+    res.status(400).json({ error: error.message });
+  }
+};
+
 // add friend to friend list
 const addFriend = async (req, res) => {
-  const { user_id } = req.params;
+  const user_id = req.user._id;
+  console.log(user_id);
   const email = req.body.friendsEmail;
   try {
     if (!mongoose.Types.ObjectId.isValid(user_id)) {
@@ -64,4 +79,4 @@ const addFriend = async (req, res) => {
   }
 };
 
-module.exports = { loginUser, signupUser, addFriend };
+module.exports = { loginUser, signupUser, addFriend, getFriends };
