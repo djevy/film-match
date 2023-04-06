@@ -1,9 +1,7 @@
-import React from 'react'
+import React from "react";
 
-const MatchCount = () => {
-  return (
-    <div>MatchCount</div>
-  )
-}
+const MatchCount = ({ matches }) => {
+  return <div className="match-count">{matches.length}</div>;
+};
 
-export default MatchCount
+export default MatchCount;

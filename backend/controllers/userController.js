@@ -1,4 +1,5 @@
 const User = require("../models/userModel");
+const Swipes = require("../models/swipesModel");
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
 
@@ -35,10 +36,14 @@ const signupUser = async (req, res) => {
 // get all friends
 const getFriends = async (req, res) => {
   const user_id = req.user._id;
-  console.log(user_id);
   try {
     const userFriends = await User.find(user_id).populate("friends");
-    const friendEmails = userFriends.map(friend => friend.friends.map(f => f.email)).flat();
+    console.log(
+      userFriends.map((friend) => friend.friends.map((f) => f._id)).flat()
+    );
+    const friendEmails = userFriends
+      .map((friend) => friend.friends.map((f) => f.email))
+      .flat();
     res.status(200).json({ friendEmails });
   } catch (error) {
     console.error(error);
@@ -49,7 +54,6 @@ const getFriends = async (req, res) => {
 // add friend to friend list
 const addFriend = async (req, res) => {
   const user_id = req.user._id;
-  console.log(user_id);
   const email = req.body.friendsEmail;
   try {
     if (!mongoose.Types.ObjectId.isValid(user_id)) {
@@ -79,4 +83,34 @@ const addFriend = async (req, res) => {
   }
 };
 
-module.exports = { loginUser, signupUser, addFriend, getFriends };
+// find matches
+const findMatches = async (req, res) => {
+  const user_id = req.user._id;
+  try {
+    const userFriends = await User.find(user_id).populate("friends");
+    const friendIds = userFriends
+      .map((friend) => friend.friends.map((f) => f._id))
+      .flat();
+    const userSwipes = await Swipes.find({ user_id }).sort({ createdAt: -1 });
+    const friendSwipes = await Swipes.find({
+      user_id: { $in: friendIds },
+    }).sort({ createdAt: -1 });
+
+    //  filter the user's swipes and the friend's swipes to find matching swipes
+    const matchedSwipes = userSwipes.filter((userSwipe) => {
+      return friendSwipes.some((friendSwipe) => {
+        return (
+          friendSwipe.name === userSwipe.name &&
+          friendSwipe.liked === true &&
+          friendSwipe.user_id.toString() === friendSwipe.user_id.toString()
+        );
+      });
+    });
+    res.status(200).json({ matchedSwipes });
+  } catch (error) {
+    console.error(error);
+    res.status(400).json({ error: error.message });
+  }
+};
+
+module.exports = { loginUser, signupUser, addFriend, getFriends, findMatches };

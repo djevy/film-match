@@ -4,10 +4,11 @@ import { useLogout } from "../../hooks/useLogout";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import "./Navbar.css";
 import Modal from "../Modal/Modal";
-import Login from "../Login/Login"
+import Login from "../Login/Login";
 import Signup from "../Signup/Signup";
+import MatchCount from "../MatchCount/MatchCount";
 
-const Navbar = () => {
+const Navbar = ({ matches }) => {
   const { logout } = useLogout();
   const { user } = useAuthContext();
   const handleClick = () => {
@@ -35,9 +36,14 @@ const Navbar = () => {
     <header id="navbar">
       <div id="desktop">
         <div className="navbar">
-          <Link to="/">
-            <h1>Film Match</h1>
-          </Link>
+          <div className="nav-left">
+            <Link to="/">
+              <h1>Film Match</h1>
+            </Link>
+            <Link to="/matches">
+              <MatchCount matches={matches} />
+            </Link>
+          </div>
           <nav className="nav-login">
             {user ? (
               <div>
@@ -101,7 +107,10 @@ const Navbar = () => {
               <div>
                 <button
                   className="nav-element glow-button"
-                  onClick={() => {toggleLoginModal(); closeMenu();}}
+                  onClick={() => {
+                    toggleLoginModal();
+                    closeMenu();
+                  }}
                 >
                   Login
                 </button>
@@ -111,7 +120,10 @@ const Navbar = () => {
 
                 <button
                   className="nav-element glow-button"
-                  onClick={() => {toggleSignupModal(); closeMenu();}}
+                  onClick={() => {
+                    toggleSignupModal();
+                    closeMenu();
+                  }}
                 >
                   Sign up
                 </button>

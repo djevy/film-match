@@ -8,22 +8,24 @@ import PreviousCards from "./pages/PreviousCards/PreviousCards";
 import Friends from "./pages/Friends/Friends";
 import Navbar from "./components/Navbar/Navbar";
 import { useAuthContext } from "./hooks/useAuthContext";
+import { useState } from "react";
 
 const App = () => {
   const { user } = useAuthContext();
+  const [matches, setMatches] = useState([]);
   return (
     <BrowserRouter className="App">
-      <Navbar />
+      <Navbar matches={matches}/>
       <div className="page-layout">
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Home setMatches={setMatches}/>} />
           <Route
             path="/dashboard"
             element={user ? <Dashboard /> : <Navigate to="/" />}
           />
           <Route
             path="/matches"
-            element={user ? <Matches /> : <Navigate to="/" />}
+            element={user ? <Matches matches={matches}/> : <Navigate to="/" />}
           />
           <Route
             path="/history"

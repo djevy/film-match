@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { Link } from "react-router-dom";
 import Modal from "../../components/Modal/Modal";
 import Signup from "../../components/Signup/Signup";
@@ -6,7 +7,7 @@ import Login from "../../components/Login/Login";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import "./Home.css";
 
-const Home = () => {
+const Home = ({setMatches}) => {
   const { user } = useAuthContext();
 
   const [loginIsOpen, setLoginIsOpen] = useState(false);
@@ -18,6 +19,28 @@ const Home = () => {
   const toggleSignupModal = () => {
     setSignupIsOpen(!signupIsOpen);
   };
+  useEffect(() => {
+    const getMatches = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:4000/api/user/findmatches",
+          {
+            headers: { Authorization: `Bearer ${user.token}` },
+          }
+        );
+        console.log(response);
+        if (response.status === 200) {
+          setMatches(response.data.matchedSwipes);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    if (user) {
+      getMatches();
+    }
+  }, [user]);
   return (
     <div>
       {user ? (
