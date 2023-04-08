@@ -16,7 +16,7 @@ const App = () => {
   return (
     <BrowserRouter className="App">
       <Navbar matches={matches}/>
-      <div className="page-layout">
+      <div>
         <Routes>
           <Route path="/" element={<Home setMatches={setMatches}/>} />
           <Route

@@ -295,12 +295,12 @@ const Dashboard = () => {
     }
     console.log("swipe", swipe);
 
-    const { name, imdb_id, liked } = swipe;
+    const { name, imdb_id, mediaType, liked } = swipe;
 
     try {
       const response = await axios.post(
         "http://localhost:4000/api/swipes",
-        { name, imdb_id, liked },
+        { name, imdb_id, mediaType, liked },
         { headers: { Authorization: `Bearer ${user.token}` } }
       );
       dispatch({ type: "CREATE_SWIPE", payload: response.data.swipe });
@@ -315,7 +315,7 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="dashboard">
+    <div className="dashboard page-layout">
       <div className="settings-container">
         <p onClick={toggleSettingsModal}>Search Options</p>
         <span

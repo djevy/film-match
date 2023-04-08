@@ -15,6 +15,10 @@ const swipesSchema = new Schema(
       type: Boolean,
       required: true,
     },
+    mediaType: {
+      type: String,
+      required: true,
+    },
     user_id: {
       type: String,
       required: true,

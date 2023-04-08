@@ -11,6 +11,21 @@
   margin-top: 10px;
 }
 
+.home-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+
+}
+.home-grid a {
+  border: solid #fff;
+  padding: 20px 10px;
+  border-radius: 15px;
+  margin: 10px 20px;
+}
+.home-grid a:hover {
+  border: solid #1190be;
+}
 
 @media only screen and (min-width: 768px) {
     .mobile-button {

@@ -4,7 +4,7 @@ import Match from "../../components/Match/Match";
 const Matches = ({matches, setMatches}) => {
 
   return (
-    <div>
+    <div className="page-layout">
       <h3>Matches</h3>
       <h4>This is what you and your friend both want to watch</h4>
       {matches ? matches?.map((match, id) => {

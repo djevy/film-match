@@ -30,7 +30,7 @@ const Friends = () => {
     }
   }, [user]);
   return (
-    <div>
+    <div className="page-layout">
       <h3>Friends</h3>
       {friends && friends?.map((friend, id) => {
         return <p key={id}>{friend}</p>

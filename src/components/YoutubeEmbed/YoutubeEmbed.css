@@ -4,6 +4,8 @@
   position: relative;
   height: 0;
   margin: 10px auto;
+  clear: both;
+  max-width: 500px;
 }
 
 .video-responsive iframe {

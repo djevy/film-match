@@ -97,7 +97,7 @@ span {
   }
   #desktop .navbar {
     display: grid;
-    grid-template-columns: 25% 75%;
+    grid-template-columns: 50% 50%;
   }
   .nav-left {
     display: flex;
@@ -109,6 +109,9 @@ span {
     border-radius: 100%;
     border: solid 2px;
     padding: 0px 5px;
+  }
+  .match-count:hover {
+    border: solid #1190be;
   }
   .nav-login {
     grid-column: 2;

@@ -25,19 +25,21 @@ const SwipedCards = ({ swipe }) => {
   };
   return (
     <div className="swiped-cards">
-      <h4>{swipe.name}</h4>
+      <h4>{swipe?.name}</h4>
+      <p>Media: {swipe?.mediaType}</p>
+
       <p className="swipe-opinion">
-        <strong>Opinion: </strong>
+        Opinion:
         {swipe.liked ? (
           <span className="material-symbols-outlined">thumb_up</span>
         ) : (
           <span className="material-symbols-outlined">thumb_down</span>
         )}
       </p>
-      <p>
-        {/* {formatDistanceToNow(new Date(swipe.createdAt), { addSuffix: true })} */}
-      </p>
-      <span className="material-symbols-outlined swipe-delete" onClick={handleDeleteClick}>
+      <span
+        className="material-symbols-outlined swipe-delete"
+        onClick={handleDeleteClick}
+      >
         delete
       </span>
     </div>

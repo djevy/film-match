@@ -29,8 +29,9 @@ const PreviousCards = () => {
     }
   }, [dispatch, user]);
   return (
-    <div>
-      PreviousCards
+    <div className="page-layout">
+      <h3>History</h3>
+      <h4>These are the cards you have already swiped on</h4>
       <div className="swiped-card-layout">
         {swipes &&
           swipes.map((swipe) => (

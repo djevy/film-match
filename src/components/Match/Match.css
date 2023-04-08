@@ -1,0 +1,21 @@
+.match-layout {
+    border-bottom: solid;
+    padding: 5px;
+}
+.match-title {
+    display: flex;
+    justify-content: space-evenly;
+    margin-bottom: 5px;
+}
+.match-title p{
+    font-size: 1.7em;
+    margin-right: 10px;
+}
+
+.match-banner {
+    width: 100%;
+    max-width: 300px;
+    float: right;
+    margin-bottom: 5px;
+    margin-left: 10px;
+}

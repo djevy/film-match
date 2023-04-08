@@ -91,6 +91,9 @@ const findMatches = async (req, res) => {
     const friendIds = userFriends
       .map((friend) => friend.friends.map((f) => f._id))
       .flat();
+    const friendEmails = userFriends
+      .map((friend) => friend.friends.map((f) => f.email))
+      .flat();
     const userSwipes = await Swipes.find({ user_id }).sort({ createdAt: -1 });
     const friendSwipes = await Swipes.find({
       user_id: { $in: friendIds },
@@ -102,6 +105,7 @@ const findMatches = async (req, res) => {
         return (
           friendSwipe.name === userSwipe.name &&
           friendSwipe.liked === true &&
+          userSwipe.liked === true &&
           friendSwipe.user_id.toString() === friendSwipe.user_id.toString()
         );
       });

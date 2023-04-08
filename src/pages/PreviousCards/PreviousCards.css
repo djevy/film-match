@@ -1,7 +1,6 @@
 .swiped-card-layout {
     display: flex;
     flex-direction: row;
-    max-width: 75vw;
     flex-wrap: wrap;
     justify-content: space-around;
 }
@@ -26,4 +25,5 @@
 
 .swiped-cards .swipe-delete {
     margin-left: auto;
+    cursor: pointer;
 }

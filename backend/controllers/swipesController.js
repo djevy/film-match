@@ -26,7 +26,7 @@ const getSwipe = async (req, res) => {
 
 // Create a new swipes
 const createSwipe = async (req, res) => {
-  const { name, imdb_id, liked } = req.body;
+  const { name, imdb_id, mediaType, liked } = req.body;
 
   let emptyFields = [];
 
@@ -35,6 +35,9 @@ const createSwipe = async (req, res) => {
   }
   if (!imdb_id) {
     emptyFields.push("imdb_id");
+  }
+  if (!mediaType) {
+    emptyFields.push("mediaType");
   }
 
   if (emptyFields.length > 0) {
@@ -46,7 +49,7 @@ const createSwipe = async (req, res) => {
   // Add document to db
   try {
     const user_id = req.user._id;
-    const swipe = await Swipes.create({ name, imdb_id, liked, user_id });
+    const swipe = await Swipes.create({ name, imdb_id, mediaType, liked, user_id });
     res.status(200).json({ message: "Swipe created successfully", swipe });
   } catch (error) {
     res.status(400).json({ error: error.message });

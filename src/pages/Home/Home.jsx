@@ -7,7 +7,7 @@ import Login from "../../components/Login/Login";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import "./Home.css";
 
-const Home = ({setMatches}) => {
+const Home = ({ setMatches }) => {
   const { user } = useAuthContext();
 
   const [loginIsOpen, setLoginIsOpen] = useState(false);
@@ -42,14 +42,16 @@ const Home = ({setMatches}) => {
     }
   }, [user]);
   return (
-    <div>
+    <div className="page">
       {user ? (
         <div className="home-layout">
           <div>Welcome</div>
-          <Link to="/dashboard">Dashboard</Link>
-          <Link to="/matches">Matches</Link>
-          <Link to="/history">History</Link>
-          <Link to="/friends">Friends</Link>
+          <div className="home-grid">
+            <Link to="/dashboard">Dashboard</Link>
+            <Link to="/matches">Matches</Link>
+            <Link to="/history">History</Link>
+            <Link to="/friends">Friends</Link>
+          </div>
         </div>
       ) : (
         <div className="home-layout">
@@ -73,10 +75,6 @@ const Home = ({setMatches}) => {
           </Modal>
         </div>
       )}
-
-      {/* <Modal isOpen={isOpen} toggleModal={toggleModal}>
-        <Login/>
-      </Modal> */}
     </div>
   );
 };
