@@ -8,35 +8,55 @@ import PreviousCards from "./pages/PreviousCards/PreviousCards";
 import Friends from "./pages/Friends/Friends";
 import Navbar from "./components/Navbar/Navbar";
 import { useAuthContext } from "./hooks/useAuthContext";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import LoadingPage from "./pages/LoadingPage/LoadingPage";
 
 const App = () => {
+  const [loading, setLoading] = useState(true);
   const { user } = useAuthContext();
   const [matches, setMatches] = useState([]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 3000);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, []);
   return (
     <BrowserRouter className="App">
-      <Navbar matches={matches}/>
-      <div>
-        <Routes>
-          <Route path="/" element={<Home setMatches={setMatches}/>} />
-          <Route
-            path="/dashboard"
-            element={user ? <Dashboard /> : <Navigate to="/" />}
-          />
-          <Route
-            path="/matches"
-            element={user ? <Matches matches={matches}/> : <Navigate to="/" />}
-          />
-          <Route
-            path="/history"
-            element={user ? <PreviousCards /> : <Navigate to="/" />}
-          />
-          <Route
-            path="/friends"
-            element={user ? <Friends /> : <Navigate to="/" />}
-          />
-        </Routes>
-      </div>
+      {loading ? (
+        <LoadingPage loading={loading} />
+      ) : (
+        <>
+          <Navbar matches={matches} />
+          <div>
+            <Routes>
+              <Route path="/" element={<Home setMatches={setMatches} />} />
+              <Route
+                path="/dashboard"
+                element={user ? <Dashboard /> : <Navigate to="/" />}
+              />
+              <Route
+                path="/matches"
+                element={
+                  user ? <Matches matches={matches} setMatches={setMatches}/> : <Navigate to="/" />
+                }
+              />
+              <Route
+                path="/history"
+                element={user ? <PreviousCards /> : <Navigate to="/" />}
+              />
+              <Route
+                path="/friends"
+                element={user ? <Friends /> : <Navigate to="/" />}
+              />
+            </Routes>
+          </div>
+        </>
+      )}
     </BrowserRouter>
   );
 };

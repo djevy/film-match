@@ -1,6 +1,7 @@
 .match-layout {
     border-bottom: solid;
     padding: 5px;
+    margin-bottom: 20px;
 }
 .match-title {
     display: flex;
@@ -10,6 +11,11 @@
 .match-title p{
     font-size: 1.7em;
     margin-right: 10px;
+    color: goldenrod;
+}
+.youtube-holder {
+    max-width: 600px;
+    margin: auto;
 }
 
 .match-banner {

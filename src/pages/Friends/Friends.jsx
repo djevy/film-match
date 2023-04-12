@@ -3,6 +3,7 @@ import axios from "axios";
 import AddFriend from "../../components/AddFriend/AddFriend";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import { useState } from "react";
+import GIF from "../../images/loading.gif";
 
 const Friends = () => {
   const [friends, setFriends] = useState("");
@@ -32,9 +33,14 @@ const Friends = () => {
   return (
     <div className="page-layout">
       <h3>Friends</h3>
-      {friends && friends?.map((friend, id) => {
-        return <p key={id}>{friend}</p>
-      })}
+      {friends ? (
+        friends &&
+        friends?.map((friend, id) => {
+          return <p key={id}>{friend}</p>;
+        })
+      ) : (
+        <img className="loading-gif" src={GIF} alt="Loading gif"/>
+      )}
       <AddFriend />
     </div>
   );

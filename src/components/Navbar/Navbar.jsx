@@ -8,6 +8,8 @@ import Login from "../Login/Login";
 import Signup from "../Signup/Signup";
 import MatchCount from "../MatchCount/MatchCount";
 
+import Logo from "../../images/FM_Logo.png";
+
 const Navbar = ({ matches }) => {
   const { logout } = useLogout();
   const { user } = useAuthContext();
@@ -34,9 +36,12 @@ const Navbar = ({ matches }) => {
   };
   return (
     <header id="navbar">
-      <div id="desktop">
+      <div>
         <div className="navbar">
           <div className="nav-left">
+            <Link to="/">
+              <img className="nav-logo" src={Logo} alt="Site logo" />
+            </Link>
             <Link to="/">
               <h1>Film Match</h1>
             </Link>
@@ -44,54 +49,46 @@ const Navbar = ({ matches }) => {
               <MatchCount matches={matches} />
             </Link>
           </div>
-          <nav className="nav-login">
-            {user ? (
-              <div>
-                <span className="nav-element">{user.email}</span>
-                <button
-                  className="nav-element glow-button"
-                  onClick={handleClick}
-                >
-                  Log out
-                </button>
-              </div>
-            ) : (
-              <div>
-                <button
-                  className="nav-element glow-button"
-                  onClick={toggleLoginModal}
-                >
-                  Login
-                </button>
-                <Modal isOpen={loginIsOpen} toggleModal={toggleLoginModal}>
-                  <Login />
-                </Modal>
-                {/* <Link className="nav-element glow-button" to="/signup">
-                  Sign up
-                </Link> */}
-              </div>
-            )}
-          </nav>
-        </div>
-      </div>
-      <div id="mobile">
-        <div className="navbar">
-          <Link to="/">
-            <h1>Film Match</h1>
-          </Link>
 
           <button className="hamburger-button" onClick={handleToggle}>
             {navbarOpen ? (
-              <span className="material-symbols-outlined">close</span>
+              <span className="material-symbols-rounded">close</span>
             ) : (
-              <span className="material-symbols-outlined">menu</span>
+              <span className="material-symbols-rounded">menu</span>
             )}
           </button>
 
           <nav className={`menuNav ${navbarOpen ? "showMenu" : ""}`}>
-            {/* <nav className="nav-login"> */}
             {user ? (
               <div>
+                <Link to="/">
+                  <img
+                    className="hamburger-logo"
+                    src={Logo}
+                    alt="Site logo"
+                    onClick={closeMenu}
+                  />
+                </Link>
+                <div className="home-grid">
+                  <Link to="/dashboard" onClick={closeMenu}>
+                    Dashboard
+                    <span className="material-symbols-rounded">
+                      movie_filter
+                    </span>
+                  </Link>
+                  <Link to="/matches" onClick={closeMenu}>
+                    Matches{" "}
+                    <span className="material-symbols-rounded">favorite</span>
+                  </Link>
+                  <Link to="/history" onClick={closeMenu}>
+                    History{" "}
+                    <span className="material-symbols-rounded">history</span>
+                  </Link>
+                  <Link to="/friends" onClick={closeMenu}>
+                    Friends{" "}
+                    <span className="material-symbols-rounded">group</span>
+                  </Link>
+                </div>
                 <span className="nav-element">{user.email}</span>
                 <button
                   className="nav-element glow-button"

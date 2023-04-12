@@ -84,16 +84,16 @@ const Match = (props) => {
   return (
     <div className="match-layout">
       <div className="match-title">
-        <p className="match-title">{props.match.name}</p>
+        <p>{props.match.name}</p>
         <button
           className="button"
           onClick={handleMoreInfo}
           disabled={isLoading}
         >
           {isLoading ? (
-            <span className="material-symbols-outlined">pending</span>
+            <span className="material-symbols-rounded">pending</span>
           ) : (
-            <span className="material-symbols-outlined">
+            <span className="material-symbols-rounded">
               {openMore ? "do_not_disturb_on" : "add_circle"}
             </span>
           )}
@@ -112,7 +112,7 @@ const Match = (props) => {
           <p>Content Rating: {matchData?.content_rating}</p>
           <p>Release Date: {matchData?.release}</p>
           <p>{matchData.description}</p>
-          <YoutubeEmbed link={matchData?.trailer} />
+          <div className="youtube-holder"><YoutubeEmbed link={matchData?.trailer} /></div>
         </div>
       )}
       {error && <p className="error">{error}</p>}

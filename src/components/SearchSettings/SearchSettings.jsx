@@ -105,7 +105,7 @@ const SearchSettings = (props) => {
       <div className="settings-options">
         <h4 onClick={toggleShowTitleTypes}>
           Media Type{" "}
-          <span className="material-symbols-outlined">
+          <span className="material-symbols-rounded">
             {showTitleTypes ? "expand_less" : "expand_more"}
           </span>
         </h4>
@@ -142,7 +142,7 @@ const SearchSettings = (props) => {
 
         <h4 onClick={toggleShowSearchTypes}>
           Popular Lists{" "}
-          <span className="material-symbols-outlined">
+          <span className="material-symbols-rounded">
             {showSearchTypes ? "expand_less" : "expand_more"}
           </span>
         </h4>
@@ -182,7 +182,7 @@ const SearchSettings = (props) => {
 
         <h4 onClick={toggleShowGenres}>
           Genre{" "}
-          <span className="material-symbols-outlined">
+          <span className="material-symbols-rounded">
             {showGenres ? "expand_less" : "expand_more"}
           </span>
         </h4>
@@ -217,7 +217,7 @@ const SearchSettings = (props) => {
         </div>
         <h4 onClick={toggleShowYears}>
           Year{" "}
-          <span className="material-symbols-outlined">
+          <span className="material-symbols-rounded">
             {showYears ? "expand_less" : "expand_more"}
           </span>
         </h4>
@@ -247,7 +247,7 @@ const SearchSettings = (props) => {
         className="glow-button"
       >
         {props.isLoading ? (
-          <span className="material-symbols-outlined">pending</span>
+          <span className="material-symbols-rounded">pending</span>
         ) : (
           "Search"
         )}

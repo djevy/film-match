@@ -1,6 +1,9 @@
 .add-friend-form {
   margin-top: 10px;
 }
+.add-friend-form button {
+  margin: 10px auto;
+}
 
 .friend-email-input {
   display: flex;

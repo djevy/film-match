@@ -31,13 +31,13 @@ const SwipedCards = ({ swipe }) => {
       <p className="swipe-opinion">
         Opinion:
         {swipe.liked ? (
-          <span className="material-symbols-outlined">thumb_up</span>
+          <span className="material-symbols-rounded">thumb_up</span>
         ) : (
-          <span className="material-symbols-outlined">thumb_down</span>
+          <span className="material-symbols-rounded">thumb_down</span>
         )}
       </p>
       <span
-        className="material-symbols-outlined swipe-delete"
+        className="material-symbols-rounded swipe-delete"
         onClick={handleDeleteClick}
       >
         delete

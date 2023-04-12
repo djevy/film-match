@@ -2,13 +2,45 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-image: linear-gradient(
-    to bottom right,
-    rgb(33, 31, 31),
-    rgb(187, 0, 255)
-  );
-  padding: 5px;
+  background-color: #0d1524;
+  padding: 5px 20px;
   height: 60px;
+}
+.nav-left {
+  display: flex;
+  align-items: center;
+}
+.nav-logo {
+  border-radius: 5px;
+  width: 50px;
+  margin-right: 10px;
+}
+.hamburger-logo {
+  border-radius: 5px;
+  width: 100px;
+}
+
+.navbar .home-grid a {
+  width: 190px;
+  border: double goldenrod;
+  padding: 20px 10px;
+  border-radius: 15px;
+  margin: 10px 20px;
+  color: goldenrod;
+  font-size: 1.3em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.match-count {
+  margin-left: 10px;
+  font-size: 1.5em;
+  border-radius: 100%;
+  border: solid 2px;
+  padding: 0px 5px;
+}
+.match-count:hover {
+  border: solid #1190be;
 }
 .navbar a,
 span {
@@ -23,10 +55,10 @@ span {
   display: none;
 }
 
-#mobile {
-  padding-bottom: 50px;
+#navbar {
+  margin-bottom: 50px;
 }
-#mobile .navbar {
+.navbar {
   position: fixed;
   height: 50px;
   width: 100%;
@@ -35,14 +67,14 @@ span {
   z-index: 9999;
 }
 
-#mobile .navbar .hamburger-button {
+.navbar .hamburger-button {
   background: none;
 }
-#mobile .navbar .hamburger-button span {
+.navbar .hamburger-button span {
   font-size: 3em;
 }
 
-#mobile .menuNav {
+.menuNav {
   overflow-y: scroll;
   list-style: none;
   position: fixed;
@@ -59,66 +91,25 @@ span {
   align-items: center;
   justify-content: space-evenly;
 }
-#mobile .menuNav div {
+.menuNav div {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-evenly;
 }
-#mobile .menuNav div button,
-#mobile .menuNav div a {
+.menuNav div button,
+.menuNav div a {
   margin-top: 10px;
 }
 
-#mobile .menuNav.showMenu {
+.menuNav.showMenu {
   width: 80%;
   z-index: 9999;
+  transition: width 1s ease;
 }
 
-#mobile a,
-#mobile p {
-  display: block;
-  text-decoration: none;
-  font-weight: bold;
-  margin: 0px;
-  font-size: 1em;
-}
-
-#mobile .menuNav li:first-child {
-  margin-top: 7rem;
-}
-
-@media only screen and (min-width: 768px) {
-  #mobile {
+@media (max-width: 320px) {
+  .navbar .logo {
     display: none;
-  }
-  #desktop {
-    display: block;
-  }
-  #desktop .navbar {
-    display: grid;
-    grid-template-columns: 50% 50%;
-  }
-  .nav-left {
-    display: flex;
-    align-items: center;
-  }
-  .match-count {
-    margin-left: 10px;
-    font-size: 1.5em;
-    border-radius: 100%;
-    border: solid 2px;
-    padding: 0px 5px;
-  }
-  .match-count:hover {
-    border: solid #1190be;
-  }
-  .nav-login {
-    grid-column: 2;
-    grid-row: 1;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    font-family: "Gotu", sans-serif;
   }
 }

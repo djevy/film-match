@@ -1,0 +1,24 @@
+
+
+.loading-page {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    color: #fff;
+    font-family: 'Gotu', sans-serif;
+}
+.loading-page .loading-logo {
+    max-width: 400px;
+}
+.loading-page #loading-name {
+    font-size: 1.6em;
+    color: goldenrod;
+}
+
+.loading-page #loading-title {
+    font-size: 1.4em;
+    color: #fff;
+}

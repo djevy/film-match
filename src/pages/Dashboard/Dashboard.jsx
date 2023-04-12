@@ -211,6 +211,10 @@ const Dashboard = () => {
   const handleMoreInfo = async (e) => {
     e.preventDefault();
     setOpenMore(!openMore);
+    if(cards[currentIndex].rating) {
+      return
+    }
+    
     setIsLoading(true);
     setError(null);
     if (cards[currentIndex].mediaType === "movie") {
@@ -329,7 +333,7 @@ const Dashboard = () => {
         <p onClick={toggleSettingsModal}>Search Options</p>
         <span
           id="search-icon"
-          className="material-symbols-outlined"
+          className="material-symbols-rounded"
           onClick={toggleSettingsModal}
         >
           settings
@@ -370,7 +374,7 @@ const Dashboard = () => {
           style={{ backgroundColor: !canSwipe && "#c3c4d3" }}
           onClick={() => swipe("left")}
         >
-          <span className="material-symbols-outlined">thumb_down</span>
+          <span className="material-symbols-rounded">thumb_down</span>
         </button>
         <button
           style={{ backgroundColor: !canGoBack && "#c3c4d3" }}
@@ -382,7 +386,7 @@ const Dashboard = () => {
           style={{ backgroundColor: !canSwipe && "#c3c4d3" }}
           onClick={() => swipe("right")}
         >
-          <span className="material-symbols-outlined">thumb_up</span>
+          <span className="material-symbols-rounded">thumb_up</span>
         </button>
       </div>
       <div className="cardContainer">
@@ -395,7 +399,6 @@ const Dashboard = () => {
             onCardLeftScreen={() => outOfFrame(character.name, index)}
           >
             <div
-              // style={{ backgroundImage: "url(" + character.url + ")" }}
               className="card"
             >
               {character.url ? (
@@ -403,7 +406,6 @@ const Dashboard = () => {
               ) : (
                 <img src={Loading} alt="" />
               )}
-              {/* <h3>{character.name}</h3> */}
             </div>
           </TinderCard>
         ))}
@@ -412,7 +414,7 @@ const Dashboard = () => {
       <div className="card-details-container">
         <h3 onClick={toggleShowDetails}>
           Details{" "}
-          <span className="material-symbols-outlined">
+          <span className="material-symbols-rounded">
             {showDetails ? "expand_more" : "expand_less"}
           </span>
         </h3>
@@ -451,7 +453,7 @@ const Dashboard = () => {
                   onClick={handleMoreInfo}
                   disabled={isLoading}
                 >
-                  <span className="material-symbols-outlined">pending</span>
+                  <span className="material-symbols-rounded">pending</span>
                 </button>
               ) : (
                 <button
@@ -459,7 +461,7 @@ const Dashboard = () => {
                   onClick={handleMoreInfo}
                   disabled={isLoading}
                 >
-                  <span className="material-symbols-outlined">
+                  <span className="material-symbols-rounded">
                     {openMore ? "do_not_disturb_on" : "add_circle"}
                   </span>
                 </button>

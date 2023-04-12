@@ -40,9 +40,9 @@ const Login = () => {
           onClick={handleShowPasswordClick}
         >
           {showPassword ? (
-            <span className="material-symbols-outlined">visibility</span>
+            <span className="material-symbols-rounded">visibility</span>
           ) : (
-            <span className="material-symbols-outlined">visibility_off</span>
+            <span className="material-symbols-rounded">visibility_off</span>
           )}
         </button>
       </div>

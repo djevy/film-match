@@ -51,12 +51,21 @@ const Home = ({ setMatches }) => {
     <div className="page-layout">
       {user ? (
         <div className="home-layout">
-          <h3>Welcome</h3>
+          <h3>Get Swiping!</h3>
           <div className="home-grid">
-            <Link to="/dashboard">Dashboard</Link>
-            <Link to="/matches">Matches</Link>
-            <Link to="/history">History</Link>
-            <Link to="/friends">Friends</Link>
+            <Link to="/dashboard">
+              Dashboard
+              <span className="material-symbols-rounded">movie_filter</span>
+            </Link>
+            <Link to="/matches">
+              Matches <span className="material-symbols-rounded">favorite</span>
+            </Link>
+            <Link to="/history">
+              History <span className="material-symbols-rounded">history</span>
+            </Link>
+            <Link to="/friends">
+              Friends <span className="material-symbols-rounded">group</span>
+            </Link>
           </div>
         </div>
       ) : (
