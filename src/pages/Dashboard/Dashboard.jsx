@@ -204,7 +204,6 @@ const Dashboard = () => {
   const [noNewCards, setNoNewCards] = useState(false);
   if (noNewCards === true) {
     setNoNewCards(false);
-    console.log("No cards");
     setPage(page + 1);
     handleSearch();
   }
