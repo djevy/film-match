@@ -28,6 +28,7 @@ const Dashboard = () => {
   const [error, setError] = useState(null);
   const [searchError, setSearchError] = useState(null);
   const [isLoading, setIsLoading] = useState(null);
+  const [openMore, setOpenMore] = useState(false);
   const [cards, setCards] = useState([
     { imdb_id: "1", name: "Set some options first", url: Popcorn },
   ]);
@@ -50,7 +51,7 @@ const Dashboard = () => {
   const toggleSettingsModal = () => {
     setSettingsIsOpen(!settingsIsOpen);
   };
-  const [showDetails, setShowDetails] = useState();
+  const [showDetails, setShowDetails] = useState(true);
   const toggleShowDetails = () => {
     setShowDetails(!showDetails);
   };
@@ -65,10 +66,6 @@ const Dashboard = () => {
         console.log(response);
         dispatch({ type: "SET_SWIPE", payload: response.data });
         setSwipedCards(response.data);
-        // response.data.forEach((swiped) => {
-        //   console.log(swiped)
-        //   setSwipedCards([...swipedCards, swiped]);
-        // });
       } catch (error) {
         console.error(error);
       }
@@ -140,6 +137,7 @@ const Dashboard = () => {
     updateCurrentIndex(newIndex);
     await childRefs[newIndex].current.restoreCard();
   };
+
   const handleSearch = useCallback(async () => {
     setIsLoading(true);
     setSearchError(null);
@@ -174,6 +172,9 @@ const Dashboard = () => {
           (item) =>
             !swipedCards.find((swipedCard) => swipedCard.imdb_id === item.id)
         );
+        if (newItems.length === 0) {
+          setNoNewCards(true);
+        }
 
         console.log("newItems", newItems);
         newItems.forEach((result) => {
@@ -200,9 +201,17 @@ const Dashboard = () => {
       }
     }
   }, [genreType, page, searchType, titleType, year, swipedCards, cards]);
+  const [noNewCards, setNoNewCards] = useState(false);
+  if (noNewCards === true) {
+    setNoNewCards(false);
+    console.log("No cards");
+    setPage(page + 1);
+    handleSearch();
+  }
 
   const handleMoreInfo = async (e) => {
     e.preventDefault();
+    setOpenMore(!openMore);
     setIsLoading(true);
     setError(null);
     if (cards[currentIndex].mediaType === "movie") {
@@ -288,6 +297,7 @@ const Dashboard = () => {
 
   // Send swipes to database
   const handleSwipeSubmit = async (swipe) => {
+    setOpenMore(false);
     if (swipe.imdb_id === "1") return;
     if (!user) {
       setError("Please login");
@@ -407,7 +417,7 @@ const Dashboard = () => {
             {showDetails ? "expand_more" : "expand_less"}
           </span>
         </h3>
-        <div className={`card-details ${showDetails ? "hide-details" : ""}`}>
+        <div className={`card-details ${showDetails ? "show" : "hide"}`}>
           <h4>{cards[currentIndex]?.name}</h4>
           {cards[currentIndex]?.releaseDate && (
             <div>
@@ -419,32 +429,42 @@ const Dashboard = () => {
                   cards[currentIndex]?.releaseDate?.month + "/"}
                 {cards[currentIndex]?.releaseDate?.year}
               </p>
-              {cards[currentIndex]?.content_rating && (
-                <p>Content Ratings: {cards[currentIndex]?.content_rating}</p>
-              )}
-              {cards[currentIndex]?.rating && (
-                <p>IMDB Score: {cards[currentIndex]?.rating}</p>
-              )}
-              {cards[currentIndex]?.description && (
-                <div>
-                  <p>Description: </p>
-                  <p>{cards[currentIndex]?.description}</p>
-                </div>
-              )}
-              {cards[currentIndex]?.trailer && (
-                <YoutubeEmbed link={cards[currentIndex]?.trailer} />
-              )}
-              <button
-                className="button"
-                onClick={handleMoreInfo}
-                disabled={isLoading}
-              >
-                {isLoading ? (
-                  <span className="material-symbols-outlined">pending</span>
-                ) : (
-                  "More..."
+              <div className={`more-details ${openMore ? "show" : "hide"}`}>
+                {cards[currentIndex]?.content_rating && (
+                  <p>Content Ratings: {cards[currentIndex]?.content_rating}</p>
                 )}
-              </button>
+                {cards[currentIndex]?.rating && (
+                  <p>IMDB Score: {cards[currentIndex]?.rating}</p>
+                )}
+                {cards[currentIndex]?.description && (
+                  <div>
+                    <p>Description: </p>
+                    <p>{cards[currentIndex]?.description}</p>
+                  </div>
+                )}
+                {cards[currentIndex]?.trailer && (
+                  <YoutubeEmbed link={cards[currentIndex]?.trailer} />
+                )}
+              </div>
+              {isLoading ? (
+                <button
+                  className="button more-button"
+                  onClick={handleMoreInfo}
+                  disabled={isLoading}
+                >
+                  <span className="material-symbols-outlined">pending</span>
+                </button>
+              ) : (
+                <button
+                  className="button more-button"
+                  onClick={handleMoreInfo}
+                  disabled={isLoading}
+                >
+                  <span className="material-symbols-outlined">
+                    {openMore ? "do_not_disturb_on" : "add_circle"}
+                  </span>
+                </button>
+              )}
               {error && <p className="error">{error}</p>}
             </div>
           )}

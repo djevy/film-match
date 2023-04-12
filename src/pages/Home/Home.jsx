@@ -33,7 +33,13 @@ const Home = ({ setMatches }) => {
           setMatches(response.data.matchedSwipes);
         }
       } catch (error) {
-        console.error(error);
+        if (error.response && error.response.status === 401) {
+          // token has expired, log user out
+          localStorage.removeItem("user");
+          // setUser(null);
+        } else {
+          console.error(error);
+        }
       }
     };
 
@@ -42,10 +48,10 @@ const Home = ({ setMatches }) => {
     }
   }, [user]);
   return (
-    <div className="page">
+    <div className="page-layout">
       {user ? (
         <div className="home-layout">
-          <div>Welcome</div>
+          <h3>Welcome</h3>
           <div className="home-grid">
             <Link to="/dashboard">Dashboard</Link>
             <Link to="/matches">Matches</Link>
