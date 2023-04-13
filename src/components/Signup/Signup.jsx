@@ -70,7 +70,7 @@ const Signup = () => {
       <button className="glow-button" disabled={isLoading}>
         Sign up
       </button>
-      {error && <div>{error}</div>}
+      {error && <p className="error">{error}</p>}
     </form>
   );
 };
