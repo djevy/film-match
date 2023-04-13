@@ -200,7 +200,7 @@ const Dashboard = () => {
         setIsLoading(false);
       }
     }
-  }, [genreType, page, searchType, titleType, year, swipedCards, cards]);
+  }, [genreType, page, searchType, titleType, year, swipedCards]);
   const [noNewCards, setNoNewCards] = useState(false);
   if (noNewCards === true) {
     setNoNewCards(false);

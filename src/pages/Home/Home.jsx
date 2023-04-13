@@ -46,7 +46,7 @@ const Home = ({ setMatches }) => {
     if (user) {
       getMatches();
     }
-  }, [user]);
+  }, [user, setMatches]);
   return (
     <div className="page-layout">
       {user ? (
