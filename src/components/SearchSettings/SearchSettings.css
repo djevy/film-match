@@ -1,5 +1,5 @@
 .settings-modal {
-  min-width: 25vw;
+  min-width: 30vw;
   max-width: 50vw;
 
   max-height: 600px;
@@ -21,6 +21,38 @@
   display: none;
 }
 
+/* .genre-options {
+  background: #dfdfdf;
+  padding: 4px;
+  border-radius: 3px;
+  position: relative;
+  width: fit-content;
+} */
+
+.genre-options input {
+  appearance: none;
+  cursor: pointer;
+  border-radius: 2px;
+  padding: 5px 10px;
+  background: #3f414d;
+  color: #fff;
+  font-size: 15px;
+  font-family: sans-serif;
+  transition: all 0.1s;
+}
+
+.genre-options input:checked {
+  background: goldenrod;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+  text-shadow: 0 1px 0px #808080;
+  color: #000;
+}
+
+.genre-options input::before {
+  content: attr(label);
+  text-align: center;
+}
+
 .show-genre-options {
   display: flex;
   flex-direction: row;
@@ -28,8 +60,12 @@
 }
 .show-genre-options input {
   margin-left: 5px;
+  margin-bottom: 5px;
 }
 
+.settings-modal .reset-button {
+  margin: 5px;
+}
 .settings-modal .glow-button {
   display: flex;
   margin: 5px auto;
@@ -48,8 +84,8 @@
   background: #fff;
   outline: none;
   opacity: 0.7;
-  -webkit-transition: .2s;
-  transition: opacity .2s;
+  -webkit-transition: 0.2s;
+  transition: opacity 0.2s;
 }
 
 .slider:hover {
@@ -59,15 +95,17 @@
 .slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 22px; 
+  width: 22px;
   height: 22px;
-  background: #04AA6D; /* Green background */
+  border-radius: 5px;
+  background: goldenrod;
   cursor: pointer; /* Cursor on hover */
 }
 
 .slider::-moz-range-thumb {
   width: 22px;
-  height: 22px; 
-  background: #04AA6D;
+  height: 22px;
+  border-radius: 5px;
+  background: goldenrod;
   cursor: pointer;
 }

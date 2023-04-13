@@ -45,7 +45,7 @@ const SearchSettings = (props) => {
   const toggleShowGenres = () => {
     setShowGenres(!showGenres);
   };
-  const [showYears, setShowYears] = useState();
+  const [showYears, setShowYears] = useState(true);
   const toggleShowYears = () => {
     setShowYears(!showYears);
   };
@@ -120,24 +120,24 @@ const SearchSettings = (props) => {
             value="movie"
             checked={props.titleType === "movie"}
             onChange={handleTitleTypeSelect}
+            label="Movies"
           />
-          <label htmlFor="movie">Movies</label>
           <input
             id="tvSeries"
             type="radio"
             value="tvSeries"
             checked={props.titleType === "tvSeries"}
             onChange={handleTitleTypeSelect}
+            label="Tv Shows"
           />
-          <label htmlFor="tvSeries">Tv Shows</label>
           <input
             id="videoGame"
             type="radio"
             value="videoGame"
             checked={props.titleType === "videoGame"}
             onChange={handleTitleTypeSelect}
+            label="Video Games"
           />
-          <label htmlFor="videoGame">Video Games</label>
         </div>
 
         <h4 onClick={toggleShowSearchTypes}>
@@ -158,8 +158,8 @@ const SearchSettings = (props) => {
               value="any"
               checked={props.searchType === "any"}
               onChange={handleSearchTypeSelect}
+              label="Any"
             />
-            <label htmlFor="anyList">Any</label>
           </div>
           {props.searchTypes &&
             props.searchTypes?.map((showType, i) => {
@@ -171,9 +171,10 @@ const SearchSettings = (props) => {
                     value={showType}
                     checked={props.searchType === showType}
                     onChange={handleSearchTypeSelect}
+                    label={showType.replace(/_/g, " ")}
                   />
                   <label htmlFor={showType}>
-                    {showType.replace(/_/g, " ")}
+                    
                   </label>
                 </div>
               );
@@ -196,8 +197,8 @@ const SearchSettings = (props) => {
               value="any"
               checked={props.genreType === "any"}
               onChange={handleGenreSelect}
+              label="Any"
             />
-            <label htmlFor="anyGenre">Any</label>
           </div>
           {genres &&
             genres?.map((genre, i) => {
@@ -209,8 +210,8 @@ const SearchSettings = (props) => {
                     value={genre}
                     checked={props.genreType === genre}
                     onChange={handleGenreSelect}
+                    label={genre}
                   />
-                  <label htmlFor={genre}>{genre}</label>
                 </div>
               );
             })}
@@ -225,7 +226,7 @@ const SearchSettings = (props) => {
           className={`genre-options ${showYears ? "show-genre-options" : ""}`}
         >
           <div className="slider-container">
-            <p>Released: {props.year}</p>
+            <p>Released: {props.year ? props.year : "Any year"}</p>
             <input
               type="range"
               min="1960"
@@ -236,7 +237,7 @@ const SearchSettings = (props) => {
             />
           </div>
         </div>
-        <button className="button" onClick={handleReset}>
+        <button className="button reset-button" onClick={handleReset}>
           Reset
         </button>
       </div>

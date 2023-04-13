@@ -8,8 +8,15 @@ body {
 }
 a {
   text-decoration: none;
+  transform: scale(1, 1);
+  transition: transform 0.5s ease;
 }
-h1, h2 {
+a:hover {
+  font-weight: bold;
+  transform: scale(1.1, 1.1);
+}
+h1,
+h2 {
   color: goldenrod;
 }
 p,
@@ -70,6 +77,13 @@ input {
   user-select: none;
   -webkit-user-select: none;
   touch-action: manipulation;
+  text-shadow: 0 1px 0px #808080;
+  transform: scale(1, 1);
+  transition: transform 0.5s ease;
+}
+.button:hover {
+  font-weight: bold;
+  transform: scale(1.1, 1.1);
 }
 
 .glow-button {

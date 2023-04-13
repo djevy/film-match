@@ -36,7 +36,7 @@ const Friends = () => {
       {friends ? (
         friends &&
         friends?.map((friend, id) => {
-          return <p key={id}>{friend}</p>;
+          return <p className="friend"key={id}>{friend}</p>;
         })
       ) : (
         <img className="loading-gif" src={GIF} alt="Loading gif"/>
