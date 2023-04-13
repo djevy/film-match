@@ -38,6 +38,9 @@
   border-radius: 100%;
   border: solid 2px;
   padding: 0px 5px;
+  min-width: 36px;
+  display: flex;
+  justify-content: center;
 }
 .match-count:hover {
   border: solid #1190be;
