@@ -16,7 +16,7 @@ export const useAddFriend = () => {
         {"friendsEmail": friendsEmail},
         { headers: { Authorization: `Bearer ${user.token}` } }
       );
-      console.log(response);
+      // console.log(response);
       if(response.status === 200) {
         setSuccess(response.data.message)
       }

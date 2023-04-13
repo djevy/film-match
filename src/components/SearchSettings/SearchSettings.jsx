@@ -69,19 +69,19 @@ const SearchSettings = (props) => {
     }
     props.setSearchType("any");
     props.setPage(1);
-    console.log(e.target.value);
+    // console.log(e.target.value);
   };
 
   const handleSearchTypeSelect = (e) => {
     props.setSearchType(e.target.value);
     props.setPage(1);
-    console.log(e.target.value);
+    // console.log(e.target.value);
   };
 
   const handleGenreSelect = (e) => {
     props.setGenreType(e.target.value);
     props.setPage(1);
-    console.log(e.target.value);
+    // console.log(e.target.value);
   };
 
   const handleYearSelect = (e) => {

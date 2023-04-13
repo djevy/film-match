@@ -28,7 +28,7 @@ const Match = (props) => {
 
       try {
         const response = await axios.request(options);
-        console.log(response);
+        // console.log(response);
         // eslint-disable-next-line
         if (response.data.results == 0) {
           setIsLoading(false);
@@ -58,7 +58,7 @@ const Match = (props) => {
 
       try {
         const response = await axios.request(options);
-        console.log(response);
+        // console.log(response);
         // eslint-disable-next-line
         if (response.data.results == 0) {
           setIsLoading(false);

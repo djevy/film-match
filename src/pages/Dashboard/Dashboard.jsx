@@ -63,7 +63,7 @@ const Dashboard = () => {
         const response = await axios.get("https://film-matcher.herokuapp.com/api/swipes", {
           headers: { Authorization: `Bearer ${user.token}` },
         });
-        console.log(response);
+        // console.log(response);
         dispatch({ type: "SET_SWIPE", payload: response.data });
         setSwipedCards(response.data);
       } catch (error) {
@@ -75,7 +75,7 @@ const Dashboard = () => {
       getSwipes();
     }
   }, [dispatch, user]);
-  console.log("swipedCards", swipedCards);
+  // console.log("swipedCards", swipedCards);
   const [page, setPage] = useState(1);
 
   const [currentIndex, setCurrentIndex] = useState(cards.length - 1);
@@ -114,8 +114,8 @@ const Dashboard = () => {
 
   const swipe = async (dir) => {
     handleNext();
-    console.log(currentIndex);
-    console.log(cards[currentIndex]);
+    // console.log(currentIndex);
+    // console.log(cards[currentIndex]);
     if (dir === "right") {
       cards[currentIndex].liked = true;
       setSwipedCards([...swipedCards, cards[currentIndex]]);
@@ -159,7 +159,7 @@ const Dashboard = () => {
     };
     try {
       const response = await axios.request(searchOptions);
-      console.log(response);
+      // console.log(response);
       if (!response.data.entries > 0) {
         setSearchError("Sorry, there are no results for this search");
         setIsLoading(false);
@@ -176,7 +176,7 @@ const Dashboard = () => {
           setNoNewCards(true);
         }
 
-        console.log("newItems", newItems);
+        // console.log("newItems", newItems);
         newItems.forEach((result) => {
           // console.log(result);
           newCards.push({
@@ -189,7 +189,7 @@ const Dashboard = () => {
         });
         setSettingsIsOpen(false);
         setCards(newCards.slice());
-        console.log("cards", cards);
+        // console.log("cards", cards);
         setCurrentIndex(newCards.length - 1);
         setIsLoading(false);
       }
@@ -230,7 +230,7 @@ const Dashboard = () => {
 
       try {
         const response = await axios.request(options);
-        console.log(response);
+        // console.log(response);
         // eslint-disable-next-line
         if (response.data.results == 0) {
           setIsLoading(false);
@@ -264,7 +264,7 @@ const Dashboard = () => {
 
       try {
         const response = await axios.request(options);
-        console.log(response);
+        // console.log(response);
         // eslint-disable-next-line
         if (response.data.results == 0) {
           setIsLoading(false);
@@ -306,7 +306,7 @@ const Dashboard = () => {
       setError("Please login");
       return;
     }
-    console.log("swipe", swipe);
+    // console.log("swipe", swipe);
 
     const { name, imdb_id, mediaType, liked } = swipe;
 
@@ -318,7 +318,7 @@ const Dashboard = () => {
       );
       dispatch({ type: "CREATE_SWIPE", payload: response.data.swipe });
 
-      console.log(response);
+      // console.log(response);
     } catch (error) {
       console.error(error);
       if (error.response.data) {

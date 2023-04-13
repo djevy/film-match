@@ -18,7 +18,7 @@ const SwipedCards = ({ swipe }) => {
       );
       const data = response.data.swipe;
       dispatch({ type: "DELETE_SWIPE", payload: data });
-      console.log(response);
+      // console.log(response);
     } catch (error) {
       console.error(error);
     }

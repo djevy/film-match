@@ -8,7 +8,6 @@ const AddFriend = () => {
   const { addFriend, error, isLoading, success } = useAddFriend();
   const { user } = useAuthContext();
   const [friendEmail, setFriendEmail] = useState("");
-//   console.log(user);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

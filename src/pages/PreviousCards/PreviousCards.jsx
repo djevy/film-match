@@ -17,7 +17,7 @@ const PreviousCards = () => {
         const response = await axios.get("https://film-matcher.herokuapp.com/api/swipes", {
           headers: { Authorization: `Bearer ${user.token}` },
         });
-        console.log(response);
+        // console.log(response);
         dispatch({ type: "SET_SWIPE", payload: response.data });
       } catch (error) {
         console.error(error);
