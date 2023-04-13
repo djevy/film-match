@@ -13,7 +13,7 @@ const SwipedCards = ({ swipe }) => {
 
     try {
       const response = await Axios.delete(
-        `http://localhost:4000/api/swipes/${swipe._id}`,
+        `https://film-matcher.herokuapp.com/api/swipes/${swipe._id}`,
         { headers: { Authorization: `Bearer ${user.token}` } }
       );
       const data = response.data.swipe;

@@ -60,7 +60,7 @@ const Dashboard = () => {
   useEffect(() => {
     const getSwipes = async () => {
       try {
-        const response = await axios.get("http://localhost:4000/api/swipes", {
+        const response = await axios.get("https://film-matcher.herokuapp.com/api/swipes", {
           headers: { Authorization: `Bearer ${user.token}` },
         });
         console.log(response);
@@ -312,7 +312,7 @@ const Dashboard = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:4000/api/swipes",
+        "https://film-matcher.herokuapp.com/api/swipes",
         { name, imdb_id, mediaType, liked },
         { headers: { Authorization: `Bearer ${user.token}` } }
       );

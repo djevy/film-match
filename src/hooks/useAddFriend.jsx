@@ -12,7 +12,7 @@ export const useAddFriend = () => {
 
     try {
       const response = await Axios.post(
-        `http://localhost:4000/api/user/addfriends`,
+        `https://film-matcher.herokuapp.com/api/user/addfriends`,
         {"friendsEmail": friendsEmail},
         { headers: { Authorization: `Bearer ${user.token}` } }
       );

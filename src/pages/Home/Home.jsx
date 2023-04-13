@@ -23,7 +23,7 @@ const Home = ({ setMatches }) => {
     const getMatches = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:4000/api/user/findmatches",
+          "https://film-matcher.herokuapp.com/api/user/findmatches",
           {
             headers: { Authorization: `Bearer ${user.token}` },
           }

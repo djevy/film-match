@@ -13,7 +13,7 @@ export const useSignup = () => {
 
     try {
       const response = await Axios.post(
-        "http://localhost:4000/api/user/signup/",
+        "https://film-matcher.herokuapp.com/api/user/signup/",
         { email, password, confirmPassword }
       );
       console.log(response);
