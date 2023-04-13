@@ -16,7 +16,7 @@ export const useLogin = () => {
         "https://film-matcher.herokuapp.com/api/user/login/",
         { email, password }
       );
-      console.log(response);
+      // console.log(response);
 
       // save user to local storage
       localStorage.setItem("user", JSON.stringify(response.data));

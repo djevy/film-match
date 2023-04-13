@@ -14,7 +14,7 @@ const Matches = ({ matches, setMatches }) => {
             headers: { Authorization: `Bearer ${user.token}` },
           }
         );
-        console.log(response);
+        // console.log(response);
         if (response.status === 200) {
           setMatches(response.data.matchedSwipes);
         }

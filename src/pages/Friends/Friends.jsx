@@ -17,7 +17,7 @@ const Friends = () => {
             headers: { Authorization: `Bearer ${user.token}` },
           }
         );
-        console.log(response);
+        // console.log(response);
         if (response.status === 200) {
           setFriends(response.data.friendEmails);
         }
